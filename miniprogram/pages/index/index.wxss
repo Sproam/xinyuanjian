@@ -1,0 +1,336 @@
+/* pages/index/index.wxss */
+.container {
+  height: 100vh;
+  background: linear-gradient(to bottom, #7C191E, #a52a2a, #f6f6f6); /* 中大红渐变背景 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 110rpx; /* 为自定义 TabBar 留出空间 */
+  box-sizing: border-box;
+}
+
+.header {
+  padding: 40rpx 0;
+  text-align: center;
+  z-index: 10;
+}
+
+/* 跑马灯样式 */
+.marquee-box {
+  width: 100%;
+  height: 70rpx;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-item {
+  display: inline-block;
+  padding: 0 40rpx;
+  font-size: 26rpx;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 氛围层：落花 */
+.ambient-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  top: -20rpx;
+  width: 15rpx;
+  height: 15rpx;
+  background: #ffc0cb; /* 粉色落花 */
+  border-radius: 15rpx 0 15rpx 15rpx;
+  opacity: 0.6;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff; /* 白色文字在深色背景上更清晰 */
+  letter-spacing: 4rpx;
+  text-shadow: 0 4rpx 10rpx rgba(0,0,0,0.2);
+}
+
+.subtitle-box {
+  margin-top: 10rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
+
+/* 树容器 */
+.tree-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.tree-image {
+  width: 95%;
+  height: 90%;
+  margin-bottom: 20rpx;
+  filter: drop-shadow(0 10rpx 20rpx rgba(0,0,0,0.2));
+}
+
+.empty-tip {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.7);
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  color: #8b4513;
+  pointer-events: none;
+}
+
+/* 祈福签样式 */
+.wish-tag-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sway 3s ease-in-out infinite alternate;
+  transform-origin: top center;
+  /* 性能优化：开启 GPU 硬件加速 */
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.tag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24rpx 16rpx;
+  position: relative;
+  min-width: 70rpx;
+  min-height: 140rpx;
+  background: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.15);
+  border: 1rpx solid #eee;
+}
+
+.tag-background {
+  display: none; /* 移除原来的背景图，改用 CSS 样式 */
+}
+
+.tag-handle {
+  width: 2rpx;
+  height: 50rpx;
+  background: #ffffff; /* 白色挂绳在红色背景下更明显 */
+  position: absolute;
+  top: -45rpx;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tag-text {
+  font-size: 24rpx;
+  color: #333;
+  writing-mode: vertical-rl;
+  max-height: 110rpx;
+  line-height: 1.4;
+  letter-spacing: 4rpx;
+  font-weight: 600;
+}
+
+/* 摇曳动画 */
+@keyframes sway {
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
+}
+
+/* 入场动画 */
+.pop-in {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 底部操作 */
+.footer-actions {
+  padding: 30rpx 40rpx 60rpx;
+  background: rgba(255,255,255,0.9);
+  border-radius: 40rpx 40rpx 0 0;
+  box-shadow: 0 -10rpx 30rpx rgba(0,0,0,0.05);
+}
+
+.category-scroll {
+  display: flex;
+  white-space: nowrap;
+  margin-bottom: 30rpx;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 12rpx 30rpx;
+  margin-right: 20rpx;
+  font-size: 24rpx;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 30rpx;
+  transition: all 0.3s;
+}
+
+.category-item.active {
+  background: var(--sysu-red);
+  color: white;
+}
+
+/* 弹窗样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.post-modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  background: #fff;
+  border-radius: 40rpx 40rpx 0 0;
+  z-index: 101;
+  padding: 0 40rpx 40rpx; /* 顶部留白由背景图填充 */
+  transition: bottom 0.3s ease;
+  overflow: hidden;
+}
+
+.modal-top-bg {
+  width: 120%;
+  height: 180rpx;
+  margin-left: -10%; /* 稍微溢出让装饰感更强 */
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  position: relative; /* 确保在背景图之上 */
+}
+
+.wish-input {
+  width: 100%;
+  height: 200rpx;
+  background: #f8f8f8;
+  padding: 20rpx;
+  box-sizing: border-box;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.word-count {
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.section-title {
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20rpx;
+}
+
+.tag-item {
+  padding: 10rpx 30rpx;
+  background: #f0f0f0;
+  border-radius: 30rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.tag-active {
+  background: var(--sysu-red);
+  color: #fff;
+}
+
+.anonymous-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.modal-footer {
+  margin-top: 50rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.submit-btn {
+  background: var(--sysu-red) !important;
+  color: #fff !important;
+  border-radius: 50rpx;
+  font-weight: bold;
+}
+

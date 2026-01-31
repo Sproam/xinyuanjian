@@ -1,0 +1,53 @@
+<!--pages/post/post.wxml-->
+<view class="container">
+  <image class="top-bg" src="../../images/modal_top_bg.jpg" mode="aspectFill"></image>
+  
+  <view class="post-card">
+    <view class="header">
+      <text class="title">写下你的心愿</text>
+      <text class="subtitle">让它在树洞里慢慢发芽...</text>
+    </view>
+
+    <textarea 
+      class="content-input" 
+      placeholder="在这里写下你的困惑、压力或小小的心愿..." 
+      maxlength="200"
+      bindinput="onInput"
+      value="{{content}}"
+      placeholder-style="color: #ccc;"
+    ></textarea>
+    <view class="word-count">{{content.length}}/200</view>
+
+    <view class="section">
+      <text class="section-label">选择分类</text>
+      <view class="cat-group">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="*this" 
+          class="cat-tag {{category === item ? 'active' : ''}}"
+          bindtap="selectCat"
+          data-cat="{{item}}"
+        >{{item}}</view>
+      </view>
+    </view>
+
+    <view class="section anonymous-section">
+      <view class="label-group">
+        <text class="section-label">匿名发布</text>
+        <text class="label-tip">开启后将隐藏你的头像和昵称</text>
+      </view>
+      <switch color="#7C191E" checked="{{isAnonymous}}" bindchange="onAnonymousChange" />
+    </view>
+
+    <button 
+      class="submit-btn" 
+      bindtap="submit" 
+      loading="{{isSubmitting}}"
+      disabled="{{isSubmitting || !content.trim()}}"
+    >挂上许愿树</button>
+  </view>
+
+  <view class="tips">
+    <text>💡 温馨提示：中大的学长学姐们会定期来这里查看并给予回应哦，请保持友善和真实。</text>
+  </view>
+</view>

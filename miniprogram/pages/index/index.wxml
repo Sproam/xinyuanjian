@@ -1,0 +1,109 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 顶部祝愿滚动条 -->
+  <view class="marquee-box" wx:if="{{blessings.length > 0}}">
+    <view class="marquee-content">
+      <text wx:for="{{blessings}}" wx:key="*this" class="marquee-item">✨ {{item}}</text>
+      <!-- 重复一份实现无缝滚动 -->
+      <text wx:for="{{blessings}}" wx:key="*this" class="marquee-item">✨ {{item}}</text>
+    </view>
+  </view>
+
+  <!-- 顶部标题区 -->
+  <view class="header">
+    <text class="title">中大线上树洞</text>
+    <view class="subtitle-box">
+      <text class="subtitle">让每一个愿望都被听见</text>
+    </view>
+  </view>
+
+  <!-- 虚拟许愿树区域 -->
+  <view class="tree-wrapper">
+    <!-- 背景氛围特效：落花/飘叶 -->
+    <view class="ambient-layer">
+      <view wx:for="{{ambientElements}}" wx:key="id" class="petal" style="left: {{item.left}}%; animation-duration: {{item.duration}}s; animation-delay: {{item.delay}}s;"></view>
+    </view>
+
+    <!-- 树的主体图片 -->
+    <image src="{{assets.tree}}" mode="aspectFit" class="tree-image"></image>
+    
+    <!-- 动态祈福签 -->
+    <view 
+      wx:for="{{questions}}" 
+      wx:key="_id" 
+      class="wish-tag-item {{item.isNew ? 'pop-in' : ''}}"
+      style="left: {{item.x}}%; top: {{item.y}}%; animation-delay: {{item.delay}}s;"
+      bindtap="onTagTap"
+      data-id="{{item._id}}"
+    >
+      <view class="tag-content">
+        <image src="{{assets.tagBg}}" class="tag-background"></image>
+        <view class="tag-handle"></view> <!-- 模拟挂绳 -->
+        <text class="tag-text">{{item.shortText}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态提示 -->
+    <view class="empty-tip" wx:if="{{questions.length === 0}}">
+      <text>树上空空的，快来挂上第一个愿望吧</text>
+    </view>
+  </view>
+
+  <!-- 底部操作区 -->
+  <view class="footer-actions">
+    <view class="category-scroll">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="*this" 
+        class="category-item {{currentCategory === item ? 'active' : ''}}"
+        bindtap="onCategoryChange"
+        data-cat="{{item}}"
+      >{{item}}</view>
+    </view>
+    
+    <button class="main-btn" bindtap="showPostModal">
+      <text>挂上我的祈福签</text>
+    </button>
+  </view>
+
+  <!-- 发布愿望弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hidePostModal" catchtouchmove="preventTouch"></view>
+  <view class="post-modal {{showModal ? 'modal-show' : ''}}" catchtouchmove="preventTouch">
+    <image src="{{assets.modalBg}}" mode="aspectFill" class="modal-top-bg"></image>
+    <view class="modal-header">
+      <text>写下你的愿望/问题</text>
+      <icon type="cancel" size="24" color="#999" bindtap="hidePostModal"></icon>
+    </view>
+    
+    <view class="modal-body">
+      <textarea 
+        class="wish-input" 
+        placeholder="在这里写下关于备考、专业选择或校园生活的疑惑..." 
+        maxlength="100"
+        bindinput="onInputWish"
+        value="{{wishText}}"
+      ></textarea>
+      <view class="word-count">{{wishText.length}}/100</view>
+
+      <view class="section-title">选择分类</view>
+      <view class="category-tags">
+        <view 
+          wx:for="{{postCategories}}" 
+          wx:key="*this" 
+          class="tag-item {{selectedCat === item ? 'tag-active' : ''}}"
+          bindtap="selectPostCat"
+          data-cat="{{item}}"
+        >{{item}}</view>
+      </view>
+
+      <view class="anonymous-switch">
+        <text>匿名发布</text>
+        <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" color="#7C191E"></switch>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="submit-btn" bindtap="submitWish">挂上枝头</button>
+    </view>
+  </view>
+</view>

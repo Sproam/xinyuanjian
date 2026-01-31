@@ -1,0 +1,81 @@
+<!--pages/me/me.wxml-->
+<view class="container">
+  <!-- 用户信息 -->
+  <view class="user-card">
+    <view class="user-header">
+      <image class="avatar" src="../../images/tree.jpg"></image>
+      <view class="user-info">
+        <text class="nickname">{{userInfo.nickname}}</text>
+        <view class="role-tag {{userInfo.role === 'volunteer' ? 'volunteer' : 'student'}}">
+          {{userInfo.role === 'volunteer' ? '中大志愿者' : '高中生'}}
+        </view>
+      </view>
+    </view>
+    
+    <view class="user-stats">
+      <view class="stat-item">
+        <text class="stat-num">{{stats.wishes}}</text>
+        <text class="stat-label">我的愿望</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{stats.answers}}</text>
+        <text class="stat-label">收到/给出回应</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat-item">
+        <text class="stat-num">{{stats.thanks}}</text>
+        <text class="stat-label">获得感谢</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-list">
+    <view class="menu-item" bindtap="navigateToWishes">
+      <view class="menu-left">
+        <text class="menu-icon">🌟</text>
+        <text class="menu-text">我的愿望记录</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+    
+    <view class="menu-item" bindtap="navigateToAnswers">
+      <view class="menu-left">
+        <text class="menu-icon">💬</text>
+        <text class="menu-text">我的回应记录</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+
+    <view class="menu-item">
+      <view class="menu-left">
+        <text class="menu-icon">🛡️</text>
+        <text class="menu-text">志愿者身份认证</text>
+      </view>
+      <text class="menu-right-text">已认证</text>
+    </view>
+  </view>
+
+  <!-- 身份切换模拟 (仅开发演示用) -->
+  <view class="dev-tools">
+    <text class="section-title">身份切换模拟 (演示用)</text>
+    <view class="switch-btns">
+      <button 
+        class="switch-btn {{userInfo.role === 'student' ? 'active' : ''}}" 
+        bindtap="switchRole" 
+        data-role="student"
+      >高中生</button>
+      <button 
+        class="switch-btn {{userInfo.role === 'volunteer' ? 'active' : ''}}" 
+        bindtap="switchRole" 
+        data-role="volunteer"
+      >中大志愿者</button>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text>中山大学志愿者协会 × 线上树洞</text>
+    <text>v1.0.0</text>
+  </view>
+</view>
