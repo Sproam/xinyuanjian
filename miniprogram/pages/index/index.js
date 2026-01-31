@@ -1,6 +1,9 @@
 // pages/index/index.js
+const app = getApp();
+
 Page({
   data: {
+    paddingTop: 0,
     // 资源路径配置（接入云存储后可修改此处）
     assets: {
       tree: '../../images/tree.jpg',
@@ -26,6 +29,7 @@ Page({
   },
 
   onLoad: function() {
+    this.setData({ paddingTop: app.globalData.navBarHeight });
     this.fetchQuestions();
     this.initAmbient();
   },
@@ -142,12 +146,13 @@ Page({
     const MAX_VISIBLE_TAGS = 20; 
     
     // 模拟数据生成逻辑
+    const types = ['question', 'wish'];
     const mockQuestions = [
-      { _id: '1', shortText: '数学怎么提分', x: 28, y: 22, delay: 0.2 },
-      { _id: '2', shortText: '中大食堂好吃吗', x: 48, y: 15, delay: 0.5 },
-      { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8 },
-      { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1 },
-      { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4 },
+      { _id: '1', shortText: '数学怎么提分', x: 28, y: 22, delay: 0.2, type: 'question' },
+      { _id: '2', shortText: '中大食堂好吃吗', x: 48, y: 15, delay: 0.5, type: 'question' },
+      { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8, type: 'wish' },
+      { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1, type: 'question' },
+      { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4, type: 'wish' },
       { _id: '6', shortText: '如何平衡学习休息', x: 75, y: 20, delay: 0.1 },
       { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7 },
       { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3 },

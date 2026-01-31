@@ -1,6 +1,9 @@
 // pages/me/me.js
+const app = getApp();
+
 Page({
   data: {
+    paddingTop: 0,
     userInfo: {
       nickname: '树洞小友',
       role: 'student', // 'student' or 'volunteer'
@@ -14,6 +17,7 @@ Page({
   },
 
   onLoad: function () {
+    this.setData({ paddingTop: app.globalData.navBarHeight });
     // 实际开发中从云数据库获取用户信息
   },
 

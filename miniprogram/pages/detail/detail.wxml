@@ -1,5 +1,11 @@
 <!--pages/detail/detail.wxml-->
-<view class="container">
+<view class="container" style="padding-top: calc(30rpx + {{paddingTop}}px);">
+  
+  <!-- 返回按钮 -->
+  <view class="nav-back" style="top: {{statusBarHeight}}px; height: {{paddingTop - statusBarHeight}}px;" bindtap="goBack">
+    <view class="back-arrow"></view>
+  </view>
+
   <!-- 问题详情卡片 -->
   <view class="question-card">
     <view class="card-header">

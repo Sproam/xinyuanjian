@@ -334,3 +334,22 @@
   font-weight: bold;
 }
 
+
+/* Tag Colors */
+.tag-content.wish {
+  background: #D32F2F;
+  border: 1rpx solid #B71C1C;
+}
+
+.tag-content.wish .tag-text {
+  color: #fff;
+}
+
+.tag-content.question {
+  background: #fff;
+  border: 1rpx solid #eee;
+}
+
+.tag-content.question .tag-text {
+  color: #333;
+}

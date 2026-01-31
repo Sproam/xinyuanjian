@@ -3,14 +3,16 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/post/post",
-    "pages/me/me"
+    "pages/me/me",
+    "pages/square/square"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#7C191E",
     "navigationBarTitleText": "中大线上树洞",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "custom": true,
@@ -24,8 +26,8 @@
         "text": "树洞"
       },
       {
-        "pagePath": "pages/post/post",
-        "text": "发布"
+        "pagePath": "pages/square/square",
+        "text": "广场"
       },
       {
         "pagePath": "pages/me/me",

@@ -1,19 +1,40 @@
 // pages/post/post.js
+const app = getApp();
+
 Page({
   data: {
+    paddingTop: 0,
     content: '',
     categories: ['学习', '生活', '情感', '中大生活'],
     category: '学习',
     isAnonymous: false,
-    isSubmitting: false
+    isSubmitting: false,
+    type: 'question' // 默认为提问
+  },
+
+  onLoad: function(options) {
+    this.setData({ 
+      paddingTop: app.globalData.navBarHeight,
+      statusBarHeight: app.globalData.statusBarHeight
+    });
+    if (options.type) {
+      this.setData({
+        type: options.type
+      });
+      wx.setNavigationBarTitle({
+        title: options.type === 'wish' ? '我要祈愿' : '我要提问'
+      });
+    }
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1
+    });
   },
 
   onShow: function() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({
-        selected: 1
-      })
-    }
+    // Post页不再是TabBar页面，不需要设置TabBar选中态
   },
 
   onInput: function(e) {

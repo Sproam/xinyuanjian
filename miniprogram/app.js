@@ -13,5 +13,18 @@ App({
     }
 
     this.globalData = {};
+
+    // 获取系统信息，用于自定义导航栏适配
+    const sysInfo = wx.getSystemInfoSync();
+    const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    
+    // 导航栏高度 = 状态栏高度 + 44 (胶囊按钮行标准高度，或者 (胶囊上边距 - 状态栏高度) * 2 + 胶囊高度)
+    // 这里采用动态计算方式
+    const navBarHeight = (menuButtonInfo.top - sysInfo.statusBarHeight) * 2 + menuButtonInfo.height + sysInfo.statusBarHeight;
+
+    this.globalData.navBarHeight = navBarHeight;
+    this.globalData.statusBarHeight = sysInfo.statusBarHeight;
+    this.globalData.menuButtonHeight = menuButtonInfo.height;
+    this.globalData.menuButtonTop = menuButtonInfo.top;
   }
 });

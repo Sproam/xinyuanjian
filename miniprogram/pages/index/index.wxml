@@ -1,16 +1,8 @@
 <!--pages/index/index.wxml-->
 <view class="container">
-  <!-- 顶部祝愿滚动条 -->
-  <view class="marquee-box" wx:if="{{blessings.length > 0}}">
-    <view class="marquee-content">
-      <text wx:for="{{blessings}}" wx:key="*this" class="marquee-item">✨ {{item}}</text>
-      <!-- 重复一份实现无缝滚动 -->
-      <text wx:for="{{blessings}}" wx:key="*this" class="marquee-item">✨ {{item}}</text>
-    </view>
-  </view>
 
   <!-- 顶部标题区 -->
-  <view class="header">
+  <view class="header" style="margin-top: {{paddingTop}}px;">
     <text class="title">中大线上树洞</text>
     <view class="subtitle-box">
       <text class="subtitle">让每一个愿望都被听见</text>
@@ -36,7 +28,7 @@
       bindtap="onTagTap"
       data-id="{{item._id}}"
     >
-      <view class="tag-content">
+      <view class="tag-content {{item.type}}">
         <image src="{{assets.tagBg}}" class="tag-background"></image>
         <view class="tag-handle"></view> <!-- 模拟挂绳 -->
         <text class="tag-text">{{item.shortText}}</text>
@@ -60,10 +52,6 @@
         data-cat="{{item}}"
       >{{item}}</view>
     </view>
-    
-    <button class="main-btn" bindtap="showPostModal">
-      <text>挂上我的祈福签</text>
-    </button>
   </view>
 
   <!-- 发布愿望弹窗 -->

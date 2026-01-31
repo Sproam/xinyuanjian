@@ -1,5 +1,5 @@
 <!--pages/me/me.wxml-->
-<view class="container">
+<view class="container" style="padding-top: calc(30rpx + {{paddingTop}}px);">
   <!-- 用户信息 -->
   <view class="user-card">
     <view class="user-header">

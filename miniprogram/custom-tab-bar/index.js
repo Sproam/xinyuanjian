@@ -7,8 +7,8 @@ Component({
       pagePath: "/pages/index/index",
       text: "树洞"
     }, {
-      pagePath: "/pages/post/post",
-      text: "发布"
+      pagePath: "/pages/square/square",
+      text: "广场"
     }, {
       pagePath: "/pages/me/me",
       text: "我的"

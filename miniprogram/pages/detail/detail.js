@@ -1,6 +1,9 @@
 // pages/detail/detail.js
+const app = getApp();
+
 Page({
   data: {
+    paddingTop: 0,
     question: {},
     answers: [],
     replyText: '',
@@ -10,8 +13,18 @@ Page({
   },
 
   onLoad: function (options) {
+    this.setData({ 
+      paddingTop: app.globalData.navBarHeight,
+      statusBarHeight: app.globalData.statusBarHeight
+    });
     const { id } = options;
     this.fetchQuestionDetail(id);
+  },
+
+  goBack() {
+    wx.navigateBack({
+      delta: 1
+    });
   },
 
   onReplyInput: function(e) {

@@ -1,0 +1,72 @@
+<!--pages/square/square.wxml-->
+<view class="container">
+  
+  <!-- Red Header Section -->
+  <view class="header-section" style="padding-top: {{paddingTop}}px;">
+    <!-- Subtitle/Slogan -->
+    <view class="header-slogan" wx:if="{{currentType === 'question'}}">互助解惑，温暖同行</view>
+    <view class="header-slogan" wx:else>许下心愿，静待花开</view>
+    
+    <!-- Custom Toggle -->
+    <view class="toggle-container">
+      <view class="toggle-pill">
+        <view class="toggle-btn {{currentType === 'wish' ? 'active' : ''}}" bindtap="onTypeChange" data-type="wish">祈愿</view>
+        <view class="toggle-btn {{currentType === 'question' ? 'active' : ''}}" bindtap="onTypeChange" data-type="question">提问</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Search Bar (Floating) -->
+  <view class="search-container">
+    <view class="search-bar">
+      <icon type="search" size="18" color="#999" />
+      <input type="text" placeholder="搜索问题或关键词..." confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearchConfirm" />
+    </view>
+  </view>
+
+  <!-- List Area -->
+  <scroll-view scroll-y class="content-list">
+    <view wx:if="{{items.length === 0}}" class="empty-tip">暂无内容</view>
+    
+    <view wx:for="{{items}}" wx:key="id" class="list-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="card-header">
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-tag tag-{{item.tagKey || 'default'}}">{{item.tag}}</text>
+      </view>
+      
+      <view class="card-content">
+        <text>{{item.detail}}</text>
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-time">{{item.time}}</text>
+        <text class="card-count">{{item.count}}</text>
+      </view>
+    </view>
+
+    <!-- Spacer for bottom bar -->
+    <view style="height: 180rpx;"></view>
+  </scroll-view>
+
+  <!-- Bottom Footer -->
+  <view class="footer-area">
+    <!-- Category Filter -->
+    <scroll-view scroll-x class="category-scroll" enable-flex>
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="*this" 
+        class="category-item {{currentCategory === item ? 'active' : ''}}" 
+        bindtap="onCategoryChange" 
+        data-cat="{{item}}"
+      >
+        {{item}}
+      </view>
+    </scroll-view>
+
+    <!-- Action Button -->
+    <button class="action-btn" bindtap="goToPost">
+      {{currentType === 'question' ? '我要提问' : '我要祈愿'}}
+    </button>
+  </view>
+
+</view>

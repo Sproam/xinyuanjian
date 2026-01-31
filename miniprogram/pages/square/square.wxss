@@ -1,0 +1,230 @@
+/* pages/square/square.wxss */
+page {
+  background-color: #F6F6F6;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Header */
+.header-section {
+  width: 100%; /* Ensure full width */
+  background-color: #9C1F22; /* Slightly darker/richer red */
+  padding: 20rpx 0 80rpx 0; /* Extra bottom padding for search bar overlap */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.header-slogan {
+  color: #fff;
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.9;
+  letter-spacing: 2rpx;
+  font-style: italic;
+}
+
+.toggle-container {
+  margin-bottom: 10rpx;
+}
+
+.toggle-pill {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50rpx;
+  padding: 6rpx;
+  display: flex;
+  width: 320rpx; /* Fixed width */
+  backdrop-filter: blur(5px);
+}
+
+.toggle-btn {
+  flex: 1;
+  text-align: center;
+  padding: 12rpx 0;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.toggle-btn.active {
+  background-color: #fff;
+  color: #9C1F22;
+  font-weight: bold;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.2);
+}
+
+/* Search Bar */
+.search-container {
+  padding: 0 30rpx;
+  margin-top: -40rpx; /* Negative margin to pull up */
+  position: relative;
+  z-index: 10;
+  margin-bottom: 20rpx;
+}
+
+.search-bar {
+  background-color: #fff;
+  border-radius: 20rpx;
+  padding: 20rpx 30rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.05);
+}
+
+.search-bar icon {
+  margin-right: 15rpx;
+}
+
+.search-bar input {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* List */
+.content-list {
+  flex: 1;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  overflow: hidden; /* Fix for flex scroll-view */
+  height: 0; /* Critical for scroll-view in flex column */
+  width: 100%;
+}
+
+.empty-tip {
+  text-align: center;
+  color: #999;
+  margin-top: 100rpx;
+}
+
+.list-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.03);
+  position: relative;
+  transition: all 0.2s;
+}
+
+.list-card:active {
+  transform: scale(0.98);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+  line-height: 1.4;
+}
+
+.card-tag {
+  font-size: 22rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  background: #f0f0f0;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* Tag colors - using English keys */
+.tag-life { background: #E8F5E9; color: #2E7D32; }
+.tag-study { background: #E3F2FD; color: #1565C0; }
+.tag-emotion { background: #FCE4EC; color: #C2185B; }
+.tag-campus { background: #FFF3E0; color: #E65100; }
+.tag-default { background: #f5f5f5; color: #999; }
+
+.card-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 24rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* Bottom Footer Area */
+.footer-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 30rpx 40rpx;
+  box-shadow: 0 -5rpx 20rpx rgba(0,0,0,0.08); /* Stronger shadow for floating effect */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 140rpx); /* Leave space for TabBar */
+  z-index: 99;
+}
+
+.category-scroll {
+  display: flex;
+  white-space: nowrap;
+  margin-bottom: 30rpx;
+  width: 100%;
+  height: 60rpx; /* Ensure height for scroll */
+}
+
+.category-item {
+  display: inline-block;
+  padding: 10rpx 30rpx;
+  margin-right: 20rpx;
+  font-size: 26rpx;
+  background: #f5f5f5;
+  color: #666;
+  border-radius: 30rpx;
+  transition: all 0.3s;
+}
+
+.category-item.active {
+  background: #9C1F22;
+  color: #fff;
+  font-weight: bold;
+}
+
+.action-btn {
+  background: linear-gradient(135deg, #9C1F22, #D32F2F); /* 更加美观的渐变红 */
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  height: 90rpx;
+  width: 100% !important;
+  box-shadow: 0 10rpx 25rpx rgba(156, 31, 34, 0.3); /* 柔和的彩色阴影 */
+  border: none;
+  
+  /* Flex 布局确保文字绝对居中 */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: normal;
+}
+
