@@ -52,46 +52,7 @@
         data-cat="{{item}}"
       >{{item}}</view>
     </view>
-  </view>
-
-  <!-- 发布愿望弹窗 -->
-  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hidePostModal" catchtouchmove="preventTouch"></view>
-  <view class="post-modal {{showModal ? 'modal-show' : ''}}" catchtouchmove="preventTouch">
-    <image src="{{assets.modalBg}}" mode="aspectFill" class="modal-top-bg"></image>
-    <view class="modal-header">
-      <text>写下你的愿望/问题</text>
-      <icon type="cancel" size="24" color="#999" bindtap="hidePostModal"></icon>
-    </view>
     
-    <view class="modal-body">
-      <textarea 
-        class="wish-input" 
-        placeholder="在这里写下关于备考、专业选择或校园生活的疑惑..." 
-        maxlength="100"
-        bindinput="onInputWish"
-        value="{{wishText}}"
-      ></textarea>
-      <view class="word-count">{{wishText.length}}/100</view>
-
-      <view class="section-title">选择分类</view>
-      <view class="category-tags">
-        <view 
-          wx:for="{{postCategories}}" 
-          wx:key="*this" 
-          class="tag-item {{selectedCat === item ? 'tag-active' : ''}}"
-          bindtap="selectPostCat"
-          data-cat="{{item}}"
-        >{{item}}</view>
-      </view>
-
-      <view class="anonymous-switch">
-        <text>匿名发布</text>
-        <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" color="#7C191E"></switch>
-      </view>
-    </view>
-
-    <view class="modal-footer">
-      <button class="submit-btn" bindtap="submitWish">挂上枝头</button>
-    </view>
+    <!-- 发布按钮已移除，功能迁移至广场页面 -->
   </view>
 </view>

@@ -72,9 +72,50 @@
     </scroll-view>
 
     <!-- Action Button -->
-    <button class="action-btn" bindtap="goToPost">
+    <button class="action-btn" bindtap="showPostModal">
       {{currentType === 'question' ? '我要提问' : '我要祈愿'}}
     </button>
   </view>
 
+  <!-- 发布弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hidePostModal" catchtouchmove="preventTouch"></view>
+  <view class="post-modal {{showModal ? 'modal-show' : ''}}" catchtouchmove="preventTouch">
+    <image src="../../images/modal_top_bg.jpg" mode="aspectFill" class="modal-top-bg"></image>
+    <view class="modal-header">
+      <text>{{currentType === 'question' ? '提个问题' : '许个愿望'}}</text>
+      <icon type="cancel" size="24" color="#999" bindtap="hidePostModal"></icon>
+    </view>
+    
+    <view class="modal-body">
+      <textarea 
+        class="wish-input" 
+        placeholder="{{currentType === 'question' ? '在这里写下关于备考、专业选择或校园生活的疑惑...' : '许个愿，万一实现了呢...'}}" 
+        maxlength="100"
+        bindinput="onInputWish"
+        value="{{wishText}}"
+      ></textarea>
+      <view class="word-count">{{wishText.length}}/100</view>
+
+      <view class="section-title">选择分类</view>
+      <view class="category-tags">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="*this"
+          wx:if="{{item !== '全部'}}"
+          class="tag-item {{selectedCat === item ? 'tag-active' : ''}}"
+          bindtap="selectPostCat"
+          data-cat="{{item}}"
+        >{{item}}</view>
+      </view>
+
+      <view class="anonymous-switch">
+        <text>匿名发布</text>
+        <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" color="#7C191E"></switch>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="submit-btn" bindtap="submitWish">发布</button>
+    </view>
+  </view>
 </view>

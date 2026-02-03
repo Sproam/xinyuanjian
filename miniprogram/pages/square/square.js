@@ -7,7 +7,13 @@ Page({
     searchQuery: '',
     categories: ['全部', '学习', '生活', '情感', '中大生活'],
     currentCategory: '全部',
-    items: [] 
+    items: [],
+    // 弹窗相关数据
+    showModal: false,
+    wishText: '',
+    selectedCat: '学习',
+    isAnonymous: false,
+    isSubmitting: false 
   },
 
   onLoad(options) {
@@ -66,7 +72,63 @@ Page({
   },
 
   refreshList() {
-    // 模拟全量数据（实际开发中应从云数据库拉取）
+    const { currentType, currentCategory, searchQuery } = this.data;
+    
+    wx.showLoading({ title: '加载中...' });
+
+    // 调用云函数获取列表
+    wx.cloud.callFunction({
+      name: 'getQuestions',
+      data: {
+        type: currentType,
+        category: currentCategory,
+        keyword: searchQuery,
+        page: 1,
+        pageSize: 20
+      }
+    }).then(res => {
+      wx.hideLoading();
+      
+      if (res.result && res.result.success) {
+        const items = res.result.data.items.map(item => ({
+          id: item._id,
+          title: item.shortText || item.content.substring(0, 20),
+          detail: item.content,
+          tag: item.category,
+          tagKey: this.getTagKey(item.category),
+          time: item.timeText || '刚刚',
+          count: item.type === 'wish' 
+            ? `${item.likeCount || 0}个同愿` 
+            : `${item.answerCount || 0}个回答`,
+          type: item.type
+        }));
+        
+        this.setData({ items });
+      } else {
+        // 云函数调用失败，使用备用模拟数据
+        this.loadMockData();
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('[getQuestions] 调用失败:', err);
+      // 网络错误时使用模拟数据
+      this.loadMockData();
+    });
+  },
+
+  // 获取标签样式key
+  getTagKey(category) {
+    const tagMap = {
+      '学习': 'study',
+      '生活': 'life',
+      '情感': 'emotion',
+      '中大生活': 'campus'
+    };
+    return tagMap[category] || 'default';
+  },
+
+  // 备用模拟数据
+  loadMockData() {
     const allItems = [
       {
         id: 1, 
@@ -120,14 +182,102 @@ Page({
       }
     ];
 
-    // 1. 根据当前 Tab (问题/祈愿) 筛选
     let filteredItems = allItems.filter(item => item.type === this.data.currentType);
-
-    // 2. 根据下方分类筛选
     if (this.data.currentCategory !== '全部') {
       filteredItems = filteredItems.filter(item => item.tag === this.data.currentCategory);
     }
     
     this.setData({ items: filteredItems });
+  },
+
+  // 搜索确认
+  onSearchConfirm() {
+    this.refreshList();
+  },
+
+  // --- 弹窗相关方法 ---
+
+  // 显示发布弹窗
+  showPostModal: function() {
+    wx.vibrateShort();
+    this.setData({ showModal: true });
+  },
+
+  // 隐藏发布弹窗
+  hidePostModal: function() {
+    this.setData({ showModal: false });
+  },
+
+  // 阻止弹窗下的页面滚动
+  preventTouch: function() {},
+
+  // 输入监听
+  onInputWish: function(e) {
+    this.setData({ wishText: e.detail.value });
+  },
+
+  // 选择发布分类
+  selectPostCat: function(e) {
+    wx.vibrateShort();
+    this.setData({ selectedCat: e.currentTarget.dataset.cat });
+  },
+
+  // 匿名开关
+  onAnonymousChange: function(e) {
+    this.setData({ isAnonymous: e.detail.value });
+  },
+
+  // 提交愿望/问题
+  submitWish: function() {
+    const { wishText, selectedCat, isAnonymous, currentType } = this.data;
+    if (!wishText.trim()) {
+      wx.showToast({ title: '写点什么吧', icon: 'none' });
+      return;
+    }
+
+    this.setData({ isSubmitting: true });
+    wx.showLoading({ title: '正在发布...' });
+
+    // 调用云函数发布
+    wx.cloud.callFunction({
+      name: 'createPost',
+      data: {
+        content: wishText.trim(),
+        category: selectedCat,
+        isAnonymous: isAnonymous,
+        type: currentType // 'question' 或 'wish'
+      }
+    }).then(res => {
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
+
+      if (res.result && res.result.success) {
+        // 重置状态
+        this.setData({
+          showModal: false,
+          wishText: '',
+          isAnonymous: false
+        });
+
+        // 刷新列表显示新内容
+        this.refreshList();
+
+        wx.vibrateLong();
+        wx.showToast({ title: '发布成功！', icon: 'success' });
+      } else {
+        wx.showToast({
+          title: res.result?.errMsg || '发布失败',
+          icon: 'none'
+        });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
+      console.error('[createPost] 调用失败:', err);
+      wx.showToast({
+        title: '网络错误，请重试',
+        icon: 'none'
+      });
+    });
   }
 });

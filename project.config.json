@@ -46,7 +46,7 @@
     "swc": false,
     "disableSWC": true
   },
-  "appid": "wx447bac2b88c75390",
+  "appid": "wxedc8cabe385d7b98",
   "projectname": "shudong",
   "libVersion": "3.14.1",
   "condition": {},
@@ -56,5 +56,6 @@
     "ignore": [],
     "include": []
   },
-  "editorSetting": {}
+  "editorSetting": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

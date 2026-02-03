@@ -41,32 +41,79 @@ Page({
 
     this.setData({ isSubmitting: true });
     wx.vibrateShort();
+    wx.showLoading({ title: '提交中...' });
 
-    // 模拟提交
-    setTimeout(() => {
-      const newAnswer = {
-        _id: 'temp_' + Date.now(),
-        author: '我 (中大志愿者)',
-        major: '待认证专业',
-        content: this.data.replyText,
-        likes: 0,
-        isLiked: false,
-        isThanked: false
-      };
+    // 调用云函数提交回答
+    wx.cloud.callFunction({
+      name: 'submitAnswer',
+      data: {
+        questionId: this.data.question._id,
+        content: this.data.replyText.trim(),
+        isAnonymous: false
+      }
+    }).then(res => {
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
 
-      this.setData({
-        answers: [newAnswer, ...this.data.answers],
-        replyText: '',
-        isSubmitting: false
-      });
+      if (res.result && res.result.success) {
+        const newAnswer = {
+          ...res.result.data,
+          isLiked: false,
+          isThanked: false
+        };
 
-      wx.showToast({ title: '回复成功', icon: 'success' });
-      wx.vibrateLong();
-    }, 800);
+        this.setData({
+          answers: [newAnswer, ...this.data.answers],
+          replyText: ''
+        });
+
+        wx.showToast({ title: '回复成功', icon: 'success' });
+        wx.vibrateLong();
+      } else {
+        wx.showToast({
+          title: res.result?.errMsg || '提交失败',
+          icon: 'none'
+        });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
+      console.error('[submitAnswer] 调用失败:', err);
+      wx.showToast({ title: '网络错误，请重试', icon: 'none' });
+    });
   },
 
   fetchQuestionDetail: function (id) {
-    // 模拟根据 ID 获取详情
+    wx.showLoading({ title: '加载中...' });
+
+    // 调用云函数获取详情
+    wx.cloud.callFunction({
+      name: 'getQuestionDetail',
+      data: {
+        questionId: id
+      }
+    }).then(res => {
+      wx.hideLoading();
+
+      if (res.result && res.result.success) {
+        this.setData({
+          question: res.result.data.question,
+          answers: res.result.data.answers
+        });
+      } else {
+        // 云函数失败，使用备用模拟数据
+        this.loadMockDetail(id);
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('[getQuestionDetail] 调用失败:', err);
+      // 网络错误时使用模拟数据
+      this.loadMockDetail(id);
+    });
+  },
+
+  // 备用模拟数据
+  loadMockDetail: function(id) {
     const mockQuestion = {
       _id: id,
       content: '我是高三的学生，最近模拟考成绩波动很大，感觉很焦虑，想请教一下学长学姐当时是怎么调节心态的？',
@@ -80,7 +127,7 @@ Page({
         _id: 'a1',
         author: '张学姐',
         major: '中大医学院',
-        content: '亲爱的同学，模拟考的意义在于发现问题而不是定义你的能力。我当时也会把错题本看作是“寻宝图”，每解决一个问题就是离中大更近一步。加油！',
+        content: '亲爱的同学，模拟考的意义在于发现问题而不是定义你的能力。我当时也会把错题本看作是"寻宝图"，每解决一个问题就是离中大更近一步。加油！',
         likes: 12,
         isLiked: false,
         isThanked: true
@@ -109,57 +156,91 @@ Page({
     
     wx.vibrateShort();
 
-    // --- 云函数调用逻辑 ---
-    /*
+    // 调用云函数点赞
     wx.cloud.callFunction({
       name: 'likeAnswer',
       data: {
         answerId: id,
         action: isLiked ? 'unlike' : 'like'
-      },
-      success: res => {
-        console.log('点赞成功', res);
-      },
-      fail: err => {
-        console.error('点赞失败', err);
       }
-    });
-    */
-
-    // 更新本地 UI 状态 (Mock 逻辑保持，直到接入云端)
-    const answers = this.data.answers.map(item => {
-      if (item._id === id) {
-        return {
-          ...item,
-          isLiked: !item.isLiked,
-          likes: item.isLiked ? item.likes - 1 : item.likes + 1
-        };
+    }).then(res => {
+      if (res.result && res.result.success) {
+        // 更新本地 UI 状态
+        const answers = this.data.answers.map(item => {
+          if (item._id === id) {
+            return {
+              ...item,
+              isLiked: !item.isLiked,
+              likes: item.isLiked ? item.likes - 1 : item.likes + 1
+            };
+          }
+          return item;
+        });
+        this.setData({ answers });
       }
-      return item;
+    }).catch(err => {
+      console.error('[likeAnswer] 调用失败:', err);
+      // 即使云函数失败，也更新本地UI（乐观更新）
+      const answers = this.data.answers.map(item => {
+        if (item._id === id) {
+          return {
+            ...item,
+            isLiked: !item.isLiked,
+            likes: item.isLiked ? item.likes - 1 : item.likes + 1
+          };
+        }
+        return item;
+      });
+      this.setData({ answers });
     });
-    this.setData({ answers });
   },
 
   onThankAnswer: function (e) {
     const { id } = e.currentTarget.dataset;
+    const answer = this.data.answers.find(a => a._id === id);
+    
+    if (answer && answer.isThanked) {
+      wx.showToast({ title: '已经感谢过了', icon: 'none' });
+      return;
+    }
+
     wx.vibrateShort();
 
-    // 更新状态
-    const answers = this.data.answers.map(item => {
-      if (item._id === id) {
-        return { ...item, isThanked: true };
+    // 调用云函数感谢
+    wx.cloud.callFunction({
+      name: 'thankAnswer',
+      data: {
+        answerId: id
       }
-      return item;
-    });
+    }).then(res => {
+      if (res.result && res.result.success) {
+        // 更新状态
+        const answers = this.data.answers.map(item => {
+          if (item._id === id) {
+            return { ...item, isThanked: true };
+          }
+          return item;
+        });
+        this.setData({ answers });
 
-    this.setData({ answers });
-
-    // 触发动效
-    this.triggerHeartAnimation();
-
-    wx.showToast({
-      title: '已送出感谢！',
-      icon: 'success'
+        // 触发动效
+        this.triggerHeartAnimation();
+        wx.showToast({ title: '已送出感谢！', icon: 'success' });
+      } else {
+        wx.showToast({ title: res.result?.errMsg || '感谢失败', icon: 'none' });
+      }
+    }).catch(err => {
+      console.error('[thankAnswer] 调用失败:', err);
+      // 即使失败也更新UI（乐观更新）
+      const answers = this.data.answers.map(item => {
+        if (item._id === id) {
+          return { ...item, isThanked: true };
+        }
+        return item;
+      });
+      this.setData({ answers });
+      this.triggerHeartAnimation();
+      wx.showToast({ title: '已送出感谢！', icon: 'success' });
     });
   },
 
