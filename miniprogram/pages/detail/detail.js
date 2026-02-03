@@ -13,9 +13,11 @@ Page({
   },
 
   onLoad: function (options) {
+    const navHeight = app.globalData.navBarHeight || 88; 
+    const statusHeight = app.globalData.statusBarHeight || 44;
     this.setData({ 
-      paddingTop: app.globalData.navBarHeight,
-      statusBarHeight: app.globalData.statusBarHeight
+      paddingTop: navHeight,
+      statusBarHeight: statusHeight
     });
     const { id } = options;
     this.fetchQuestionDetail(id);

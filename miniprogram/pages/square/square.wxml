@@ -19,8 +19,16 @@
   <!-- Search Bar (Floating) -->
   <view class="search-container">
     <view class="search-bar">
-      <icon type="search" size="18" color="#999" />
-      <input type="text" placeholder="搜索问题或关键词..." confirm-type="search" bindinput="onSearchInput" bindconfirm="onSearchConfirm" />
+      <icon class="search-icon" type="search" size="18" color="#9C1F22" />
+      <input 
+        type="text" 
+        placeholder="搜索感兴趣的话题..." 
+        placeholder-class="search-placeholder"
+        confirm-type="search" 
+        bindinput="onSearchInput" 
+        bindconfirm="onSearchConfirm" 
+      />
+      <view class="search-btn" bindtap="onSearchConfirm">搜索</view>
     </view>
   </view>
 

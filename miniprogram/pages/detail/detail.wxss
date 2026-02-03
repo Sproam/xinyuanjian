@@ -391,41 +391,26 @@
   justify-content: center;
 }
 
-/* Custom Navigation Back Button */
-.custom-nav-btn {
-  position: fixed;
-  left: 20rpx;
-  width: 60rpx;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-
-.back-arrow {
-  width: 24rpx;
-  height: 24rpx;
-  border-left: 5rpx solid #fff;
-  border-bottom: 5rpx solid #fff;
-  transform: rotate(45deg);
-  margin-left: 10rpx;
-}
-
-/* 返回按钮 */
+/* 返回按钮容器 */
 .nav-back {
   position: fixed;
   left: 20rpx;
+  width: 64rpx;
+  height: 64rpx;
+  z-index: 9999;
   display: flex;
   align-items: center;
-  z-index: 100;
-  width: 80rpx; /* 增加点击区域 */
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2); 
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
 }
 
 .back-arrow {
-  width: 24rpx;
-  height: 24rpx;
-  border-left: 4rpx solid #fff;
-  border-bottom: 4rpx solid #fff;
+  width: 20rpx;
+  height: 20rpx;
+  border-left: 4rpx solid #ffffff;
+  border-bottom: 4rpx solid #ffffff;
   transform: rotate(45deg);
+  margin-left: 6rpx;
 }
