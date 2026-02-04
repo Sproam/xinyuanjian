@@ -15,9 +15,16 @@ Page({
   onLoad: function (options) {
     const navHeight = app.globalData.navBarHeight || 88; 
     const statusHeight = app.globalData.statusBarHeight || 44;
+    const menuButtonHeight = app.globalData.menuButtonHeight || 32;
+    const menuButtonTop = app.globalData.menuButtonTop || (statusHeight + 4);
+
     this.setData({ 
       paddingTop: navHeight,
-      statusBarHeight: statusHeight
+      statusBarHeight: statusHeight,
+      menuInfo: {
+        height: menuButtonHeight,
+        top: menuButtonTop
+      }
     });
     const { id } = options;
     this.fetchQuestionDetail(id);
@@ -151,12 +158,24 @@ Page({
 
   onLikeAnswer: function (e) {
     const { id } = e.currentTarget.dataset;
-    const answer = this.data.answers.find(a => a._id === id);
-    const isLiked = answer ? answer.isLiked : false;
+    const answerIndex = this.data.answers.findIndex(a => a._id === id);
+    if (answerIndex === -1) return;
+
+    const answer = this.data.answers[answerIndex];
+    const isLiked = answer.isLiked;
     
+    // 1. 乐观更新：立即在本地修改 UI，无需等待服务器响应
+    const newAnswers = [...this.data.answers];
+    newAnswers[answerIndex] = {
+      ...answer,
+      isLiked: !isLiked,
+      likes: isLiked ? answer.likes - 1 : answer.likes + 1
+    };
+    this.setData({ answers: newAnswers });
+
     wx.vibrateShort();
 
-    // 调用云函数点赞
+    // 2. 后台异步调用云函数
     wx.cloud.callFunction({
       name: 'likeAnswer',
       data: {
@@ -164,83 +183,59 @@ Page({
         action: isLiked ? 'unlike' : 'like'
       }
     }).then(res => {
-      if (res.result && res.result.success) {
-        // 更新本地 UI 状态
-        const answers = this.data.answers.map(item => {
-          if (item._id === id) {
-            return {
-              ...item,
-              isLiked: !item.isLiked,
-              likes: item.isLiked ? item.likes - 1 : item.likes + 1
-            };
-          }
-          return item;
-        });
-        this.setData({ answers });
+      // 如果云函数执行成功，通常无需做任何事，因为 UI 已经是正确的
+      if (!res.result || !res.result.success) {
+        throw new Error(res.result?.errMsg || '点赞失败');
       }
     }).catch(err => {
       console.error('[likeAnswer] 调用失败:', err);
-      // 即使云函数失败，也更新本地UI（乐观更新）
-      const answers = this.data.answers.map(item => {
-        if (item._id === id) {
-          return {
-            ...item,
-            isLiked: !item.isLiked,
-            likes: item.isLiked ? item.likes - 1 : item.likes + 1
-          };
-        }
-        return item;
-      });
-      this.setData({ answers });
+      // 3. 如果失败，需要回滚 UI 状态
+      const rollbackAnswers = [...this.data.answers];
+      rollbackAnswers[answerIndex] = answer; // 恢复旧状态
+      this.setData({ answers: rollbackAnswers });
+      wx.showToast({ title: '操作失败', icon: 'none' });
     });
   },
 
   onThankAnswer: function (e) {
     const { id } = e.currentTarget.dataset;
-    const answer = this.data.answers.find(a => a._id === id);
+    const answerIndex = this.data.answers.findIndex(a => a._id === id);
+    if (answerIndex === -1) return;
+
+    const answer = this.data.answers[answerIndex];
     
-    if (answer && answer.isThanked) {
+    if (answer.isThanked) {
       wx.showToast({ title: '已经感谢过了', icon: 'none' });
       return;
     }
 
     wx.vibrateShort();
 
-    // 调用云函数感谢
+    // 1. 乐观更新：立即触发动效和状态变更
+    this.triggerHeartAnimation();
+    wx.showToast({ title: '已送出感谢！', icon: 'success' });
+
+    const newAnswers = [...this.data.answers];
+    newAnswers[answerIndex] = { ...answer, isThanked: true };
+    this.setData({ answers: newAnswers });
+
+    // 2. 后台调用云函数
     wx.cloud.callFunction({
       name: 'thankAnswer',
       data: {
         answerId: id
       }
     }).then(res => {
-      if (res.result && res.result.success) {
-        // 更新状态
-        const answers = this.data.answers.map(item => {
-          if (item._id === id) {
-            return { ...item, isThanked: true };
-          }
-          return item;
-        });
-        this.setData({ answers });
-
-        // 触发动效
-        this.triggerHeartAnimation();
-        wx.showToast({ title: '已送出感谢！', icon: 'success' });
-      } else {
-        wx.showToast({ title: res.result?.errMsg || '感谢失败', icon: 'none' });
+      if (!res.result || !res.result.success) {
+        throw new Error(res.result?.errMsg || '感谢失败');
       }
     }).catch(err => {
       console.error('[thankAnswer] 调用失败:', err);
-      // 即使失败也更新UI（乐观更新）
-      const answers = this.data.answers.map(item => {
-        if (item._id === id) {
-          return { ...item, isThanked: true };
-        }
-        return item;
-      });
-      this.setData({ answers });
-      this.triggerHeartAnimation();
-      wx.showToast({ title: '已送出感谢！', icon: 'success' });
+      // 3. 失败回滚
+      const rollbackAnswers = [...this.data.answers];
+      rollbackAnswers[answerIndex] = answer;
+      this.setData({ answers: rollbackAnswers });
+      wx.showToast({ title: '发送失败，请重试', icon: 'none' });
     });
   },
 

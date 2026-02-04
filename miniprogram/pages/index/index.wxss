@@ -99,27 +99,24 @@
 
 /* 刷新按钮 */
 .refresh-btn {
-  position: absolute;
-  top: 20rpx;
-  right: 20rpx;
-  width: 64rpx;
-  height: 64rpx;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
+  position: fixed; /* 改为 fixed 以便相对于整个窗口定位，与胶囊对齐 */
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.25); /* 半透明毛玻璃 */
+  border-radius: 40rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
-  z-index: 20;
-  padding: 0;
+  backdrop-filter: blur(8px);
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
 }
 
-.refresh-icon {
-  font-size: 40rpx; /* 稍微调大一点 */
-  color: #7C191E;
-  font-weight: bold;
-  line-height: 1; /* 消除默认行高影响 */
-  margin-bottom: 4rpx; /* 微调视觉中心 */
+.refresh-text {
+  font-size: 26rpx; 
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
 }
 
 /* 树容器 */
@@ -222,7 +219,7 @@
 
 /* 底部操作 */
 .footer-actions {
-  padding: 30rpx 40rpx 60rpx;
+  padding: 50rpx 40rpx 60rpx;
   background: rgba(255,255,255,0.9);
   border-radius: 40rpx 40rpx 0 0;
   box-shadow: 0 -10rpx 30rpx rgba(0,0,0,0.05);
@@ -255,133 +252,6 @@
   background: var(--sysu-red);
   color: white;
 }
-
-/* 发布按钮 */
-.post-btn {
-  width: 100%;
-  height: 88rpx;
-  background: linear-gradient(135deg, #7C191E, #a52a2a);
-  color: white;
-  font-size: 32rpx;
-  font-weight: bold;
-  border-radius: 44rpx;
-  border: none;
-  box-shadow: 0 8rpx 20rpx rgba(124, 25, 30, 0.3);
-}
-
-.post-btn::after {
-  border: none;
-}
-
-/* 弹窗样式 */
-.modal-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 100;
-}
-
-.post-modal {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: -100%;
-  background: #fff;
-  border-radius: 40rpx 40rpx 0 0;
-  z-index: 101;
-  padding: 0 40rpx 40rpx; /* 顶部留白由背景图填充 */
-  transition: bottom 0.3s ease;
-  overflow: hidden;
-}
-
-.modal-top-bg {
-  width: 120%;
-  height: 180rpx;
-  margin-left: -10%; /* 稍微溢出让装饰感更强 */
-  margin-bottom: 20rpx;
-  display: block;
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  position: relative; /* 确保在背景图之上 */
-}
-
-.wish-input {
-  width: 100%;
-  height: 200rpx;
-  background: #f8f8f8;
-  padding: 20rpx;
-  box-sizing: border-box;
-  border-radius: 12rpx;
-  font-size: 28rpx;
-}
-
-.word-count {
-  text-align: right;
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 10rpx;
-}
-
-.section-title {
-  margin-top: 30rpx;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.category-tags {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20rpx;
-}
-
-.tag-item {
-  padding: 10rpx 30rpx;
-  background: #f0f0f0;
-  border-radius: 30rpx;
-  margin-right: 20rpx;
-  margin-bottom: 20rpx;
-  font-size: 24rpx;
-  color: #666;
-}
-
-.tag-active {
-  background: var(--sysu-red);
-  color: #fff;
-}
-
-.anonymous-switch {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 30rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.modal-footer {
-  margin-top: 50rpx;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.submit-btn {
-  background: var(--sysu-red) !important;
-  color: #fff !important;
-  border-radius: 50rpx;
-  font-weight: bold;
-}
-
 
 /* Tag Colors */
 .tag-content.wish {

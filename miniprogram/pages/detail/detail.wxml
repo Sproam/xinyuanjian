@@ -2,7 +2,7 @@
 <view class="container" style="padding-top: calc(30rpx + {{paddingTop}}px);">
   
   <!-- 返回按钮 -->
-  <view class="nav-back" style="top: {{statusBarHeight}}px; height: {{paddingTop - statusBarHeight}}px;" bindtap="goBack">
+  <view class="nav-back" style="top: {{menuInfo.top}}px; height: {{menuInfo.height}}px; width: {{menuInfo.height}}px;" bindtap="goBack">
     <view class="back-arrow"></view>
   </view>
 
@@ -10,7 +10,7 @@
   <view class="question-card">
     <view class="card-header">
       <view class="user-info">
-        <image class="avatar" src="../../images/tree.png"></image>
+        <image class="avatar" src="../../images/tree.jpg"></image>
         <text class="nickname">{{question.isAnonymous ? '匿名同学' : '一位高中生'}}</text>
       </view>
       <text class="tag">{{question.category || '未分类'}}</text>
@@ -36,7 +36,7 @@
       <view wx:for="{{answers}}" wx:key="_id" class="answer-item">
         <view class="answer-header">
           <view class="volunteer-info">
-            <image class="v-avatar" src="../../images/tree.png"></image>
+            <image class="v-avatar" src="../../images/tree.jpg"></image>
             <view class="v-meta">
               <text class="v-name">{{item.author}}</text>
               <text class="v-major">{{item.major}}</text>
@@ -62,7 +62,7 @@
     </view>
 
     <view wx:else class="empty-answers">
-      <image src="../../images/tree.png" mode="aspectFit" class="empty-img"></image>
+      <image src="../../images/tree.jpg" mode="aspectFit" class="empty-img"></image>
       <text>愿望正在枝头静静等待回应...</text>
     </view>
   </view>

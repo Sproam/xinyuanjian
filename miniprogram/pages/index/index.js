@@ -6,30 +6,32 @@ Page({
     paddingTop: 0,
     // 资源路径配置（接入云存储后可修改此处）
     assets: {
-      tree: '../../images/tree.jpg',
-      tagBg: '../../images/tag_bg.jpg',
-      modalBg: '../../images/modal_top_bg.jpg'
+      tree: '../../images/tree.jpg'
     },
     questions: [],
-    blessings: [
-      "祝愿2026年高考学子金榜题名！",
-      "愿每一个中大梦都能在这里起航。",
-      "学长学姐在康乐园等你哦~",
-      "今天也是元气满满的一天！"
-    ],
     ambientElements: [], // 氛围元素（落花）
     categories: ['全部', '学习', '生活', '情感', '中大生活'],
-    postCategories: ['学习', '生活', '情感', '中大生活'],
-    currentCategory: '全部',
-    showModal: false,
-    wishText: '',
-    selectedCat: '学习',
-    isAnonymous: false,
-    isSubmitting: false
+    currentCategory: '全部'
   },
 
   onLoad: function() {
-    this.setData({ paddingTop: app.globalData.navBarHeight });
+    // 获取胶囊按钮位置信息，用于对齐刷新按钮
+    const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+    const statusHeight = app.globalData.statusBarHeight || 44;
+    // 计算胶囊按钮距离顶部的距离，或者直接使用 top
+    const menuButtonTop = menuButtonInfo.top;
+    const menuButtonHeight = menuButtonInfo.height;
+
+    this.setData({ 
+      paddingTop: app.globalData.navBarHeight,
+      menuInfo: {
+        top: menuButtonTop,
+        height: menuButtonHeight,
+        width: 76,
+        right: app.globalData.screenWidth - menuButtonInfo.right // 如果需要对称位置
+      }
+    });
+
     this.fetchQuestions();
     this.initAmbient();
   },
@@ -53,99 +55,6 @@ Page({
       });
     }
     this.setData({ ambientElements: elements });
-  },
-
-  // 显示发布弹窗
-  showPostModal: function() {
-    wx.vibrateShort();
-    this.setData({ showModal: true });
-  },
-
-  // 隐藏发布弹窗
-  hidePostModal: function() {
-    this.setData({ showModal: false });
-  },
-
-  // 阻止弹窗下的页面滚动
-  preventTouch: function() {},
-
-  // 输入监听
-  onInputWish: function(e) {
-    this.setData({ wishText: e.detail.value });
-  },
-
-  // 选择发布分类
-  selectPostCat: function(e) {
-    wx.vibrateShort();
-    this.setData({ selectedCat: e.currentTarget.dataset.cat });
-  },
-
-  // 匿名开关
-  onAnonymousChange: function(e) {
-    this.setData({ isAnonymous: e.detail.value });
-  },
-
-  // 提交愿望
-  submitWish: function() {
-    const { wishText, selectedCat, isAnonymous } = this.data;
-    if (!wishText.trim()) {
-      wx.showToast({ title: '写点什么吧', icon: 'none' });
-      return;
-    }
-
-    this.setData({ isSubmitting: true });
-    wx.showLoading({ title: '正在挂上枝头...' });
-
-    // 调用云函数发布
-    wx.cloud.callFunction({
-      name: 'createPost',
-      data: {
-        content: wishText.trim(),
-        category: selectedCat,
-        isAnonymous: isAnonymous,
-        type: 'wish' // 从首页发布默认为祈愿
-      }
-    }).then(res => {
-      wx.hideLoading();
-      this.setData({ isSubmitting: false });
-
-      if (res.result && res.result.success) {
-        // 创建新的愿望标签显示在树上
-        const newQuestion = {
-          _id: res.result.data._id,
-          shortText: wishText.substring(0, 8),
-          x: Math.random() * 60 + 20,
-          y: Math.random() * 40 + 10,
-          delay: 0,
-          isNew: true,
-          type: 'wish'
-        };
-
-        const questions = [newQuestion, ...this.data.questions];
-        this.setData({
-          questions,
-          showModal: false,
-          wishText: '',
-          isAnonymous: false
-        });
-
-        wx.vibrateLong();
-        wx.showToast({ title: '挂载成功！', icon: 'success' });
-      } else {
-        wx.showToast({
-          title: res.result?.errMsg || '发布失败',
-          icon: 'none'
-        });
-      }
-    }).catch(err => {
-      wx.hideLoading();
-      this.setData({ isSubmitting: false });
-      console.error('[createPost] 调用失败:', err);
-      wx.showToast({
-        title: '网络错误，请重试',
-        icon: 'none'
-      });
-    });
   },
 
   // 刷新许愿树标签
@@ -338,12 +247,6 @@ Page({
     wx.vibrateShort();
     wx.navigateTo({
       url: `/pages/detail/detail?id=${id}`,
-    });
-  },
-
-  onPostClick: function() {
-    wx.navigateTo({
-      url: '/pages/post/post',
     });
   }
 });

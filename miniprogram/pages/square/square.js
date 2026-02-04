@@ -8,6 +8,14 @@ Page({
     categories: ['全部', '学习', '生活', '情感', '中大生活'],
     currentCategory: '全部',
     items: [],
+    
+    // 分页加载相关
+    page: 1,
+    pageSize: 10,
+    hasMore: true,
+    isLoading: false,
+    isRefreshing: false,
+
     // 弹窗相关数据
     showModal: false,
     wishText: '',
@@ -20,7 +28,7 @@ Page({
     this.setData({
       paddingTop: app.globalData.navBarHeight
     });
-    this.refreshList();
+    this.loadData(true);
   },
 
   onShow() {
@@ -37,33 +45,28 @@ Page({
       this.setData({ 
         currentType: type 
       });
-      // Here you would typically reload data based on type
-      this.refreshList();
+      this.loadData(true);
     }
   },
 
   onCategoryChange(e) {
     const cat = e.currentTarget.dataset.cat;
     this.setData({ currentCategory: cat });
-    this.refreshList(); // In real app, filter by category
+    this.loadData(true);
   },
 
   onSearchInput(e) {
     this.setData({ searchQuery: e.detail.value });
   },
 
-  onSearchConfirm() {
-    // Perform search
-    console.log('Searching for:', this.data.searchQuery);
+  onSearchConfirm(e) {
+    // 兼容键盘搜索键，如果e中有value则使用
+    if (e && e.detail && e.detail.value) {
+      this.setData({ searchQuery: e.detail.value });
+    }
+    this.loadData(true);
   },
 
-  goToPost() {
-    const type = this.data.currentType;
-    wx.navigateTo({
-      url: `/pages/post/post?type=${type}`,
-    });
-  },
-  
   goToDetail(e) {
     const id = e.currentTarget.dataset.id;
     wx.navigateTo({
@@ -71,10 +74,24 @@ Page({
     });
   },
 
-  refreshList() {
-    const { currentType, currentCategory, searchQuery } = this.data;
+  // 加载数据
+  loadData(reset = false) {
+    // 如果是加载更多（非重置）且正在加载中，则阻断
+    if (!reset && this.data.isLoading) return;
+    // 如果是加载更多且没有更多数据，则阻断
+    if (!reset && !this.data.hasMore) return;
+
+    const { currentType, currentCategory, searchQuery, page, pageSize } = this.data;
+    const curPage = reset ? 1 : page; // 如果是重置，则从第一页开始
+
+    this.setData({ isLoading: true });
     
-    wx.showLoading({ title: '加载中...' });
+    // 如果是刷新/搜索，显示加载提示
+    if (reset) {
+      wx.showLoading({ title: '搜索中...' });
+    }
+
+    console.log(`[loadData] 开始加载 reset:${reset}, page:${curPage}, keyword:${searchQuery}`);
 
     // 调用云函数获取列表
     wx.cloud.callFunction({
@@ -83,14 +100,20 @@ Page({
         type: currentType,
         category: currentCategory,
         keyword: searchQuery,
-        page: 1,
-        pageSize: 20
+        page: curPage,
+        pageSize: pageSize
       }
     }).then(res => {
-      wx.hideLoading();
+      console.log('[loadData] 云函数返回成功', res);
+      if (reset) {
+        wx.hideLoading();
+        this.setData({ isRefreshing: false });
+        // 增加震动反馈
+        wx.vibrateShort({ type: 'light' });
+      }
       
       if (res.result && res.result.success) {
-        const items = res.result.data.items.map(item => ({
+        const newItems = res.result.data.items.map(item => ({
           id: item._id,
           title: item.shortText || item.content.substring(0, 20),
           detail: item.content,
@@ -103,17 +126,40 @@ Page({
           type: item.type
         }));
         
-        this.setData({ items });
+        console.log(`[loadData] 解析得到 ${newItems.length} 条数据`);
+
+        this.setData({ 
+          items: reset ? newItems : [...this.data.items, ...newItems],
+          isLoading: false,
+          page: curPage + 1,
+          hasMore: res.result.data.hasMore
+        });
       } else {
-        // 云函数调用失败，使用备用模拟数据
-        this.loadMockData();
+        console.warn('[loadData] 云函数逻辑错误或未部署', res);
+        // 云函数调用失败/未部署，使用备用模拟数据
+        this.setData({ isLoading: false });
+        if (reset) this.loadMockData();
       }
     }).catch(err => {
-      wx.hideLoading();
-      console.error('[getQuestions] 调用失败:', err);
+      console.error('[loadData] 调用失败', err);
+      if (reset) {
+        wx.hideLoading();
+        this.setData({ isRefreshing: false });
+      }
+      this.setData({ isLoading: false });
+      
       // 网络错误时使用模拟数据
-      this.loadMockData();
+      if (reset) this.loadMockData();
     });
+  },
+
+  onReachBottom() {
+    this.loadData(false);
+  },
+
+  onPullDownRefresh() {
+    this.setData({ isRefreshing: true });
+    this.loadData(true);
   },
 
   // 获取标签样式key
@@ -183,17 +229,23 @@ Page({
     ];
 
     let filteredItems = allItems.filter(item => item.type === this.data.currentType);
+    
     if (this.data.currentCategory !== '全部') {
       filteredItems = filteredItems.filter(item => item.tag === this.data.currentCategory);
+    }
+
+    // 关键词过滤
+    if (this.data.searchQuery && this.data.searchQuery.trim()) {
+      const keyword = this.data.searchQuery.trim();
+      filteredItems = filteredItems.filter(item => 
+        item.title.includes(keyword) || item.detail.includes(keyword)
+      );
     }
     
     this.setData({ items: filteredItems });
   },
 
-  // 搜索确认
-  onSearchConfirm() {
-    this.refreshList();
-  },
+
 
   // --- 弹窗相关方法 ---
 
@@ -260,7 +312,7 @@ Page({
         });
 
         // 刷新列表显示新内容
-        this.refreshList();
+        this.loadData(true);
 
         wx.vibrateLong();
         wx.showToast({ title: '发布成功！', icon: 'success' });
