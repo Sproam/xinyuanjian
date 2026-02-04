@@ -74,7 +74,7 @@ exports.main = async (event, context) => {
         type: type, // 'question' 或 'wish'
         isAnonymous: isAnonymous || false,
         openid: wxContext.OPENID,
-        status: 'active', // active, resolved, closed
+        status: 0, // 0 = 待审核, 1 = 审核通过, -1 = 审核拒绝
         answerCount: 0,
         likeCount: 0,
         createTime: now,

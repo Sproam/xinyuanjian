@@ -1,0 +1,58 @@
+<view class="container" style="padding-top: calc(30rpx + {{paddingTop}}px);">
+  
+  <!-- 返回按钮 -->
+  <view class="nav-back" style="top: {{menuInfo.top}}px; height: {{menuInfo.height}}px; width: {{menuInfo.height}}px;" bindtap="goBack">
+    <view class="back-arrow"></view>
+  </view>
+
+  <view class="page-header">
+    <text class="page-title">内容审核</text>
+    <text class="page-subtitle">待处理 {{items.length}} 条</text>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-state">
+    <text>加载中...</text>
+  </view>
+
+  <view wx:elif="{{items.length === 0}}" class="empty-state">
+    <icon type="success" size="64" color="#07c160"/>
+    <text>太棒了，所有内容都处理完了！</text>
+  </view>
+
+  <scroll-view scroll-y class="card-list" wx:else>
+    <view wx:for="{{items}}" wx:key="_id" class="audit-card">
+      <!-- 帖子类型和时间 -->
+      <view class="card-top">
+        <view class="tag-row">
+          <view class="tag {{item.type === 'question' ? 'tag-q' : 'tag-w'}}">
+            {{item.type === 'question' ? '📝 提问' : '🌟 祈愿'}}
+          </view>
+          <view class="tag tag-cat">{{item.category || '未分类'}}</view>
+          <view class="tag tag-anon" wx:if="{{item.isAnonymous}}">匿名</view>
+        </view>
+        <text class="time-text">{{item.timeText || '刚刚'}}</text>
+      </view>
+
+      <!-- 帖子正文内容 -->
+      <view class="card-body">
+        <text class="content-text" selectable="true" user-select="true">{{item.content || item.shortText || '(无内容)'}}</text>
+      </view>
+      
+      <!-- 发帖人信息 -->
+      <view class="card-footer">
+        <text class="openid-text">发帖人: {{item.openid || '未知'}}</text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="card-actions">
+        <view class="action-btn btn-reject" hover-class="btn-hover" bindtap="handleAudit" data-id="{{item._id}}" data-action="reject">
+           ✕ 拒绝
+        </view>
+        <view class="action-btn btn-pass" hover-class="btn-hover" bindtap="handleAudit" data-id="{{item._id}}" data-action="pass">
+           ✓ 通过
+        </view>
+      </view>
+    </view>
+    <view style="height: 150rpx;"></view>
+  </scroll-view>
+</view>

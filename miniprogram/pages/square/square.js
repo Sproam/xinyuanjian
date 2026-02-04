@@ -374,7 +374,7 @@ Page({
         this.loadData(true);
 
         wx.vibrateLong();
-        wx.showToast({ title: '发布成功！', icon: 'success' });
+        wx.showToast({ title: '发布成功，等待审核', icon: 'none', duration: 2000 });
       } else {
         wx.showToast({
           title: res.result?.errMsg || '发布失败',

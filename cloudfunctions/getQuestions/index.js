@@ -15,13 +15,15 @@ exports.main = async (event, context) => {
     page = 1,    // 页码
     pageSize = 20, // 每页数量
     forTree = false, // 是否用于许愿树显示
-    sort = 'new' // 'new' (最新) 或 'hot' (评论数/热度)
+    sort = 'new', // 'new' (最新) 或 'hot' (评论数/热度)
+    status        // [新增] 支持传入 status 筛选
   } = event
 
   try {
     // 构造查询条件对象
     let whereOpts = {
-      status: 'active'
+      // 默认只显示已审核(1)
+      status: status !== undefined ? status : 1
     };
 
     // 类型筛选

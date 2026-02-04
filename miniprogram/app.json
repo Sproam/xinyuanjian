@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/detail/detail",
     "pages/me/me",
-    "pages/square/square"
+    "pages/square/square",
+    "pages/admin/audit/audit"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
