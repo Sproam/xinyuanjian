@@ -18,35 +18,31 @@ exports.main = async (event, context) => {
   } = event
 
   try {
-    let query = db.collection('questions').where({
+    // 构造查询条件对象
+    let whereOpts = {
       status: 'active'
-    })
+    };
 
     // 类型筛选
     if (type && ['question', 'wish'].includes(type)) {
-      query = db.collection('questions').where({
-        status: 'active',
-        type: type
-      })
+      whereOpts.type = type;
     }
 
     // 分类筛选
     if (category && category !== '全部') {
-      query = query.where({
-        category: category
-      })
+      whereOpts.category = category;
     }
 
     // 关键词搜索
     if (keyword && keyword.trim()) {
-      query = query.where({
-        content: db.RegExp({
-          regexp: keyword.trim(),
-          options: 'i'
-        })
-      })
+      whereOpts.content = db.RegExp({
+        regexp: keyword.trim(),
+        options: 'i'
+      });
     }
 
+    // 构建查询
+    const query = db.collection('questions').where(whereOpts);
     // 获取总数
     const countResult = await query.count()
     const total = countResult.total

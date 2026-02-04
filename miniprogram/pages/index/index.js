@@ -148,6 +148,17 @@ Page({
     });
   },
 
+  // 刷新许愿树标签
+  refreshTreeTags: function() {
+    wx.vibrateShort();
+    if (this.data.currentCategory === '全部') {
+      this.fetchQuestions();
+    } else {
+      this.onCategoryChange({ currentTarget: { dataset: { cat: this.data.currentCategory } } });
+    }
+    wx.showToast({ title: '已刷新', icon: 'none' });
+  },
+
   fetchQuestions: function() {
     // 调用云函数获取许愿树数据
     wx.cloud.callFunction({
@@ -185,9 +196,9 @@ Page({
       { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8, type: 'wish' },
       { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1, type: 'question' },
       { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4, type: 'wish' },
-      { _id: '6', shortText: '如何平衡学习休息', x: 75, y: 20, delay: 0.1 },
-      { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7 },
-      { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3 },
+      { _id: '6', shortText: '如何平衡学习休息', x: 75, y: 20, delay: 0.1, type: 'question' },
+      { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7, type: 'wish' },
+      { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3, type: 'question' },
     ];
     this.setData({ questions: mockQuestions.slice(0, 20) });
   },
@@ -246,7 +257,6 @@ Page({
       { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7, type: 'wish', category: '情感' },
       { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3, type: 'question', category: '中大生活' },
     ];
-    
     const filtered = allMockQuestions.filter(q => q.category === cat);
     this.setData({ questions: filtered });
   },
