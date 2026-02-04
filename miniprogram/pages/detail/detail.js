@@ -4,8 +4,10 @@ const app = getApp();
 Page({
   data: {
     paddingTop: 0,
+    questionId: '',
     question: {},
     answers: [],
+    currentSort: 'likes', // 'likes' order by default
     replyText: '',
     isSubmitting: false,
     showHearts: false,
@@ -27,7 +29,18 @@ Page({
       }
     });
     const { id } = options;
+    this.setData({ questionId: id });
     this.fetchQuestionDetail(id);
+  },
+
+  changeSort(e) {
+    const sort = e.currentTarget.dataset.sort;
+    if (sort !== this.data.currentSort) {
+      this.setData({ currentSort: sort });
+      if (this.data.questionId) {
+        this.fetchQuestionDetail(this.data.questionId);
+      }
+    }
   },
 
   goBack() {
@@ -97,7 +110,8 @@ Page({
     wx.cloud.callFunction({
       name: 'getQuestionDetail',
       data: {
-        questionId: id
+        questionId: id,
+        sort: this.data.currentSort
       }
     }).then(res => {
       wx.hideLoading();

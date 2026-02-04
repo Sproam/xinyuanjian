@@ -109,13 +109,41 @@
   align-items: center;
 }
 
-.section-title text:first-child {
+.title-left {
+  display: flex;
+  align-items: center;
+}
+
+.title-left text:first-child {
   font-size: 28rpx;
   font-weight: 600;
   color: #666;
   padding-left: 10rpx;
   border-left: 6rpx solid var(--sysu-red);
   line-height: 1;
+  margin-right: 16rpx;
+}
+
+.sort-tabs {
+  display: flex;
+  align-items: center;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.sort-tabs .tab {
+  padding: 8rpx 10rpx;
+  transition: color 0.3s;
+}
+
+.sort-tabs .tab.active {
+  color: var(--sysu-red);
+  font-weight: bold;
+}
+
+.sort-tabs .divider {
+  margin: 0 4rpx;
+  color: #eee;
 }
 
 .count {

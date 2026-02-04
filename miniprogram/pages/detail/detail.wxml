@@ -28,8 +28,15 @@
   <!-- 回答列表 -->
   <view class="answer-section">
     <view class="section-title">
-      <text>学长学姐的回应</text>
-      <text class="count">{{answers.length}} 条回答</text>
+      <view class="title-left">
+        <text>学长学姐的回应</text>
+        <text class="count">{{answers.length}} 条回答</text>
+      </view>
+      <view class="sort-tabs">
+         <text class="tab {{currentSort === 'likes' ? 'active' : ''}}" bindtap="changeSort" data-sort="likes">按点赞</text>
+         <text class="divider">|</text>
+         <text class="tab {{currentSort === 'time' ? 'active' : ''}}" bindtap="changeSort" data-sort="time">按时间</text>
+      </view>
     </view>
 
     <view wx:if="{{answers.length > 0}}" class="answer-list">

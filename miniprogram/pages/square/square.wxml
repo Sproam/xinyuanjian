@@ -33,6 +33,13 @@
     </view>
   </view>
 
+  <!-- Sort Bar -->
+  <view class="sort-bar">
+    <view class="sort-item {{currentSort === 'new' ? 'active' : ''}}" bindtap="onSortChange" data-sort="new">最新发布</view>
+    <view class="divider">|</view>
+    <view class="sort-item {{currentSort === 'hot' ? 'active' : ''}}" bindtap="onSortChange" data-sort="hot">最多评论</view>
+  </view>
+
   <!-- List Area -->
   <scroll-view 
     scroll-y 

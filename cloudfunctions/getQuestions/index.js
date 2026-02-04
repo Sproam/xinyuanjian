@@ -14,7 +14,8 @@ exports.main = async (event, context) => {
     keyword,     // 搜索关键词，可选
     page = 1,    // 页码
     pageSize = 20, // 每页数量
-    forTree = false // 是否用于许愿树显示
+    forTree = false, // 是否用于许愿树显示
+    sort = 'new' // 'new' (最新) 或 'hot' (评论数/热度)
   } = event
 
   try {
@@ -67,7 +68,17 @@ exports.main = async (event, context) => {
         .get()
     } else {
       // 列表模式：获取完整信息
-      result = await query
+      let listQuery = query;
+
+      if (sort === 'hot') {
+        // 根据类型选择排序字段
+        // 对于普通提问按回答数(answerCount)，对于祈愿按点赞/同愿数(likeCount)
+        const sortField = type === 'wish' ? 'likeCount' : 'answerCount';
+        listQuery = listQuery.orderBy(sortField, 'desc');
+      }
+      
+      // 默认/次级排序按时间倒序
+      result = await listQuery
         .orderBy('createTime', 'desc')
         .skip(skip)
         .limit(pageSize)

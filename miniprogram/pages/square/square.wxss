@@ -115,6 +115,31 @@ page {
   opacity: 0.9;
 }
 
+/* Sort Bar */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Right aligned */
+  padding: 0 40rpx 20rpx;
+  font-size: 24rpx;
+  color: #888;
+}
+
+.sort-item {
+  padding: 10rpx 20rpx;
+  transition: color 0.3s;
+}
+
+.sort-item.active {
+  color: #9C1F22;
+  font-weight: bold;
+}
+
+.divider {
+  color: #eee;
+  margin: 0 10rpx;
+}
+
 /* List */
 .content-list {
   flex: 1;
@@ -184,7 +209,7 @@ page {
   margin-bottom: 24rpx;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2; /* Limit to 2 lines */
+  -webkit-line-clamp: 5; /* Limit to 5 lines */
   overflow: hidden;
 }
 

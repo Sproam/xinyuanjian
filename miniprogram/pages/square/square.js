@@ -7,6 +7,7 @@ Page({
     searchQuery: '',
     categories: ['全部', '学习', '生活', '情感', '中大生活'],
     currentCategory: '全部',
+    currentSort: 'new', // 'new' or 'hot'
     items: [],
     
     // 分页加载相关
@@ -55,6 +56,14 @@ Page({
     this.loadData(true);
   },
 
+  onSortChange(e) {
+    const sort = e.currentTarget.dataset.sort;
+    if (sort !== this.data.currentSort) {
+      this.setData({ currentSort: sort });
+      this.loadData(true);
+    }
+  },
+
   onSearchInput(e) {
     this.setData({ searchQuery: e.detail.value });
   },
@@ -101,7 +110,8 @@ Page({
         category: currentCategory,
         keyword: searchQuery,
         page: curPage,
-        pageSize: pageSize
+        pageSize: pageSize,
+        sort: this.data.currentSort
       }
     }).then(res => {
       console.log('[loadData] 云函数返回成功', res);
@@ -115,7 +125,8 @@ Page({
       if (res.result && res.result.success) {
         const newItems = res.result.data.items.map(item => ({
           id: item._id,
-          title: item.shortText || item.content.substring(0, 20),
+          // 列表页标题使用更长的内容 (30字)，不再受限于许愿树的8字短标题
+          title: item.content.length > 30 ? (item.content.substring(0, 30) + '...') : item.content,
           detail: item.content,
           tag: item.category,
           tagKey: this.getTagKey(item.category),

@@ -9,7 +9,7 @@ const _ = db.command
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  const { questionId } = event
+  const { questionId, sort = 'likes' } = event // sort: 'likes' (默认点赞) 或 'time' (时间)
 
   if (!questionId) {
     return {
@@ -31,14 +31,22 @@ exports.main = async (event, context) => {
 
     const question = questionResult.data
 
+    // 构建回答查询
+    let answerQuery = db.collection('answers').where({
+      questionId: questionId
+    });
+
+    // 根据排序参数处理
+    if (sort === 'time') {
+      // 按发布时间倒序 (最新的在最前)
+      answerQuery = answerQuery.orderBy('createTime', 'desc');
+    } else {
+      // 默认按点赞数 (最热) -> 时间正序
+      answerQuery = answerQuery.orderBy('likes', 'desc').orderBy('createTime', 'asc');
+    }
+
     // 获取该问题的所有回答
-    const answersResult = await db.collection('answers')
-      .where({
-        questionId: questionId
-      })
-      .orderBy('likes', 'desc') // 按点赞数排序
-      .orderBy('createTime', 'asc')
-      .get()
+    const answersResult = await answerQuery.get()
 
     // 获取当前用户对这些回答的点赞状态
     const answerIds = answersResult.data.map(a => a._id)

@@ -60,19 +60,22 @@ exports.main = async (event, context) => {
       }
     } else {
       // 删除点赞记录
-      await db.collection('likes')
+      const removeResult = await db.collection('likes')
         .where({
           openid: wxContext.OPENID,
           answerId: answerId
         })
         .remove()
 
-      // 原子性自减点赞数
-      await db.collection('answers').doc(answerId).update({
-        data: {
-          likes: _.inc(-1)
-        }
-      })
+      // 只有确实删除了点赞记录，才减少计数
+      if (removeResult.stats.removed > 0) {
+        // 原子性自减点赞数
+        await db.collection('answers').doc(answerId).update({
+          data: {
+            likes: _.inc(-1)
+          }
+        })
+      }
 
       return {
         success: true,

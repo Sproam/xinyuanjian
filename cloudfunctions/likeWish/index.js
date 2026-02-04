@@ -69,18 +69,20 @@ exports.main = async (event, context) => {
       }
     } else {
       // 取消同愿
-      await db.collection('wish_likes')
+      const removeResult = await db.collection('wish_likes')
         .where({
           openid: wxContext.OPENID,
           questionId: questionId
         })
         .remove()
 
-      await db.collection('questions').doc(questionId).update({
-        data: {
-          likeCount: _.inc(-1)
-        }
-      })
+      if (removeResult.stats.removed > 0) {
+        await db.collection('questions').doc(questionId).update({
+          data: {
+            likeCount: _.inc(-1)
+          }
+        })
+      }
 
       return {
         success: true,
