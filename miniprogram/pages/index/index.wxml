@@ -12,8 +12,10 @@
   <!-- 虚拟许愿树区域 -->
   <view class="tree-wrapper">
     <!-- 刷新按钮 -->
-    <view class="refresh-btn" bindtap="refreshTreeTags">
-      <text class="refresh-icon">↻</text>
+    <view class="refresh-btn" 
+          style="top: {{menuInfo.top}}px; width: {{menuInfo.width}}px; height: {{menuInfo.height}}px; left: 20rpx;" 
+          bindtap="refreshTreeTags">
+      <text class="refresh-text">刷新</text>
     </view>
 
     <!-- 背景氛围特效：落花/飘叶 -->
@@ -34,22 +36,8 @@
       data-id="{{item._id}}"
     >
       <view class="tag-content {{item.type}}">
-        <view class="tag-rope"></view>
-        <view class="tag-loop"></view>
-        <view class="tag-cloud">
-          <view class="tag-cloud-dot"></view>
-        </view>
-        <view class="tag-body">
-          <view class="tag-band"></view>
-          <text class="tag-text">{{item.shortText}}</text>
-        </view>
-        <view class="tag-footer"></view>
-        <view class="tag-tassel-line"></view>
-        <view class="tag-bead"></view>
-        <view class="tag-tassel">
-          <view class="tassel-strand tassel-l"></view>
-          <view class="tassel-strand tassel-r"></view>
-        </view>
+        <view class="tag-handle"></view> <!-- 模拟挂绳 -->
+        <text class="tag-text">{{item.shortText}}</text>
       </view>
     </view>
 

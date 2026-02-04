@@ -2,7 +2,6 @@
   "pages": [
     "pages/index/index",
     "pages/detail/detail",
-    "pages/post/post",
     "pages/me/me",
     "pages/square/square"
   ],

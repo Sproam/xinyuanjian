@@ -1,18 +1,26 @@
 /* pages/me/me.wxss */
 .container {
-  padding: 30rpx;
+  padding: 20rpx 0;
   background: linear-gradient(to bottom, #7C191E, #a52a2a, #f6f6f6);
   min-height: 100vh;
-  padding-bottom: 140rpx; /* 为 TabBar 留出空间 */
+  padding-bottom: 200rpx; /* 为 TabBar 留出更多空间 */
   box-sizing: border-box;
 }
 
 .user-card {
-  background: #fff;
+  width: 90%;
+  margin: 0 auto 30rpx;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 24rpx;
   padding: 40rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
-  margin-bottom: 40rpx;
+  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.08); /* 优化投影 */
+  box-sizing: border-box;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20rpx); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .user-header {
@@ -22,23 +30,27 @@
 }
 
 .avatar {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 60rpx;
-  margin-right: 30rpx;
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin-right: 32rpx;
   background: #eee;
+  border: 4rpx solid #fff;
+  box-shadow: 0 6rpx 16rpx rgba(0,0,0,0.1);
 }
 
 .user-info {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .nickname {
-  font-size: 36rpx;
-  font-weight: bold;
+  font-size: 38rpx;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 12rpx;
+  margin-bottom: 16rpx;
+  letter-spacing: 1rpx;
 }
 
 .role-tag {
@@ -93,18 +105,26 @@
 
 /* 菜单列表 */
 .menu-list {
+  width: 90%;
+  margin: 0 auto 40rpx;
   background: #fff;
   border-radius: 24rpx;
   overflow: hidden;
-  margin-bottom: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.04);
+  animation: slideUp 0.5s ease-out 0.1s backwards;
 }
 
 .menu-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 30rpx 40rpx;
-  border-bottom: 1rpx solid #f5f5f5;
+  padding: 34rpx 40rpx;
+  border-bottom: 2rpx solid #f9f9f9;
+  transition: background 0.2s;
+}
+
+.menu-item:active {
+  background: #fcfcfc;
 }
 
 .menu-item:last-child {
@@ -117,29 +137,29 @@
 }
 
 .menu-icon {
-  font-size: 32rpx;
-  margin-right: 20rpx;
+  font-size: 36rpx;
+  margin-right: 24rpx;
+  width: 50rpx;
+  text-align: center;
 }
 
 .menu-text {
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #333;
+  font-weight: 500;
 }
 
 .arrow {
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #ccc;
-}
-
-.menu-right-text {
-  font-size: 24rpx;
-  color: #999;
+  font-weight: bold;
 }
 
 /* 开发工具 - 身份切换 */
 .dev-tools {
-  margin-top: 60rpx;
-  padding: 0 20rpx;
+  width: 90%;
+  margin: 60rpx auto 0;
+  padding: 0;
 }
 
 .section-title {
