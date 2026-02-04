@@ -9,6 +9,10 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const { content, category, isAnonymous, type } = event
+  
+  // 必须看这个日志！如果日志里没有这行，说明云端代码没更新
+  console.log('[createPost] 开始执行，内容:', content)
+
   // type: 'question' 或 'wish'
 
   // 参数校验
@@ -35,13 +39,29 @@ exports.main = async (event, context) => {
   }
 
   try {
-    // 内容审核（可选，使用微信内容安全API）
-    // const checkResult = await cloud.openapi.security.msgSecCheck({
-    //   content: content
-    // })
-    // if (checkResult.errCode !== 0) {
-    //   return { success: false, errMsg: '内容包含敏感信息' }
-    // }
+    // 1. 接入微信内容安全接口 (严谨版)
+    try {
+      const checkResult = await cloud.openapi.security.msgSecCheck({
+        content: content
+      })
+      
+      // 调试日志：去云开发控制台-云函数-日志可以看到这个输出，确认接口是否真的被调用了
+      console.log('内容审核结果:', checkResult)
+       
+      // 严格检查：只要 errCode 存在且不为 0，就拒绝
+      if (checkResult.errCode !== 0) {
+        return { success: false, errMsg: '内容包含敏感信息，请文明发言' }
+      }
+    } catch (err) {
+      console.error('[内容审核拦截]', err)
+      // 87014: 内容违规
+      if (err.errCode === 87014) {
+        return { success: false, errMsg: '内容包含敏感信息，请文明发言' }
+      }
+      // 如果出现调用错误（如配置问题），建议在测试阶段先报错，以免上线后被封
+      // 如果你希望接口挂了也能发帖（降级处理），可以注释掉下面这行
+      // return { success: false, errMsg: '内容审核服务异常，请稍后重试' }
+    }
 
     const now = db.serverDate()
     const shortText = content.substring(0, 8) + (content.length > 8 ? '...' : '')

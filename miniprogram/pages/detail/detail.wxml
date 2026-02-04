@@ -64,6 +64,9 @@
           <view class="action-item" bindtap="onThankAnswer" data-id="{{item._id}}">
             <text>❤️ 感谢</text>
           </view>
+          <view class="action-item" wx:if="{{isAdmin}}" catchtap="onDeleteAnswer" data-id="{{item._id}}">
+             <text style="color: red; font-size: 24rpx;">🗑️ 删除</text>
+          </view>
         </view>
       </view>
     </view>

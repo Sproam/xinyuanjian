@@ -64,6 +64,7 @@
       <view class="card-footer">
         <text class="card-time">{{item.time}}</text>
         <text class="card-count">{{item.count}}</text>
+        <text wx:if="{{isAdmin}}" catchtap="onDeletePost" data-id="{{item.id}}" style="color: red; margin-left: 20rpx; font-size: 24rpx;">删除</text>
       </view>
     </view>
 

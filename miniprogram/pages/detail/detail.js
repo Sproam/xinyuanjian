@@ -11,7 +11,8 @@ Page({
     replyText: '',
     isSubmitting: false,
     showHearts: false,
-    hearts: []
+    hearts: [],
+    isAdmin: false
   },
 
   onLoad: function (options) {
@@ -28,9 +29,61 @@ Page({
         top: menuButtonTop
       }
     });
+
+    this.checkAdminRole();
+
     const { id } = options;
     this.setData({ questionId: id });
     this.fetchQuestionDetail(id);
+  },
+
+  checkAdminRole() {
+    wx.cloud.callFunction({
+      name: 'checkUserRole'
+    }).then(res => {
+      if (res.result && res.result.success) {
+        this.setData({
+          isAdmin: res.result.isAdmin
+        })
+      }
+    }).catch(err => {
+      console.error('检查权限失败', err)
+    })
+  },
+
+  onDeleteAnswer(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '管理员操作',
+      content: '确定要删除这条评论吗？',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中' });
+          wx.cloud.callFunction({
+            name: 'deleteAnswer',
+            data: { 
+              answerId: id,
+              questionId: this.data.questionId 
+            }
+          }).then(res => {
+            wx.hideLoading();
+            if (res.result.success) {
+              wx.showToast({ title: '删除成功' });
+              // Remove the item from list locally
+              this.setData({
+                answers: this.data.answers.filter(item => item._id !== id)
+              });
+            } else {
+              wx.showToast({ title: res.result.errMsg, icon: 'none' });
+            }
+          }).catch(err => {
+            wx.hideLoading();
+            console.error(err);
+            wx.showToast({ title: '调用失败', icon: 'none' });
+          });
+        }
+      }
+    });
   },
 
   changeSort(e) {

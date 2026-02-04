@@ -9,6 +9,7 @@ Page({
     currentCategory: '全部',
     currentSort: 'new', // 'new' or 'hot'
     items: [],
+    isAdmin: false, // 是否是管理员
     
     // 分页加载相关
     page: 1,
@@ -29,7 +30,54 @@ Page({
     this.setData({
       paddingTop: app.globalData.navBarHeight
     });
+    this.checkAdminRole();
     this.loadData(true);
+  },
+
+  checkAdminRole() {
+    wx.cloud.callFunction({
+      name: 'checkUserRole'
+    }).then(res => {
+      if (res.result && res.result.success) {
+        this.setData({
+          isAdmin: res.result.isAdmin
+        })
+      }
+    }).catch(err => {
+      console.error('检查权限失败', err)
+    })
+  },
+
+  onDeletePost(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '管理员操作',
+      content: '确定要删除这条内容吗？',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中' });
+          wx.cloud.callFunction({
+            name: 'deletePost',
+            data: { questionId: id }
+          }).then(res => {
+            wx.hideLoading();
+            if (res.result.success) {
+              wx.showToast({ title: '删除成功' });
+              // Remove the item from list locally
+              this.setData({
+                items: this.data.items.filter(item => item.id !== id)
+              });
+            } else {
+              wx.showToast({ title: res.result.errMsg, icon: 'none' });
+            }
+          }).catch(err => {
+            wx.hideLoading();
+            console.error(err);
+            wx.showToast({ title: '调用失败', icon: 'none' });
+          });
+        }
+      }
+    });
   },
 
   onShow() {
