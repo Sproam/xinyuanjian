@@ -1,0 +1,96 @@
+<!--pages/detail/detail.wxml-->
+<view class="container" style="padding-top: calc(30rpx + {{paddingTop}}px);">
+  
+  <!-- 返回按钮 -->
+  <view class="nav-back" style="top: {{statusBarHeight}}px; height: {{paddingTop - statusBarHeight}}px;" bindtap="goBack">
+    <view class="back-arrow"></view>
+  </view>
+
+  <!-- 问题详情卡片 -->
+  <view class="question-card">
+    <view class="card-header">
+      <view class="user-info">
+        <image class="avatar" src="../../images/tree.png"></image>
+        <text class="nickname">{{question.isAnonymous ? '匿名同学' : '一位高中生'}}</text>
+      </view>
+      <text class="tag">{{question.category || '未分类'}}</text>
+    </view>
+    
+    <view class="content">
+      <text class="question-text">{{question.content || question.shortText}}</text>
+    </view>
+    
+    <view class="card-footer">
+      <text class="time">发布于 2026-01-31</text>
+    </view>
+  </view>
+
+  <!-- 回答列表 -->
+  <view class="answer-section">
+    <view class="section-title">
+      <text>学长学姐的回应</text>
+      <text class="count">{{answers.length}} 条回答</text>
+    </view>
+
+    <view wx:if="{{answers.length > 0}}" class="answer-list">
+      <view wx:for="{{answers}}" wx:key="_id" class="answer-item">
+        <view class="answer-header">
+          <view class="volunteer-info">
+            <image class="v-avatar" src="../../images/tree.png"></image>
+            <view class="v-meta">
+              <text class="v-name">{{item.author}}</text>
+              <text class="v-major">{{item.major}}</text>
+            </view>
+          </view>
+          <view class="thank-badge" wx:if="{{item.isThanked}}">已感谢</view>
+        </view>
+        
+        <view class="answer-content">
+          <text>{{item.content}}</text>
+        </view>
+
+        <view class="answer-actions">
+          <view class="action-item" bindtap="onLikeAnswer" data-id="{{item._id}}">
+            <icon type="{{item.isLiked ? 'success' : 'circle'}}" size="16"></icon>
+            <text>{{item.likes || 0}} 点赞</text>
+          </view>
+          <view class="action-item" bindtap="onThankAnswer" data-id="{{item._id}}">
+            <text>❤️ 感谢</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-answers">
+      <image src="../../images/tree.png" mode="aspectFit" class="empty-img"></image>
+      <text>愿望正在枝头静静等待回应...</text>
+    </view>
+  </view>
+
+  <!-- 底部回复栏 -->
+  <view class="bottom-bar">
+    <input 
+      class="reply-input" 
+      placeholder="我也来分享经验..." 
+      value="{{replyText}}"
+      bindinput="onReplyInput"
+      disabled="{{isSubmitting}}"
+    />
+    <button 
+      class="send-btn" 
+      bindtap="submitReply" 
+      loading="{{isSubmitting}}"
+      disabled="{{isSubmitting}}"
+    >发送</button>
+  </view>
+
+  <!-- 感谢动效层 -->
+  <view class="heart-container" wx:if="{{showHearts}}">
+    <view 
+      wx:for="{{hearts}}" 
+      wx:key="id" 
+      class="heart" 
+      style="left: {{item.left}}%; animation-duration: {{item.duration}}s; animation-delay: {{item.delay}}s;"
+    >❤️</view>
+  </view>
+</view>

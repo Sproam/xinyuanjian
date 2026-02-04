@@ -1,0 +1,540 @@
+/* pages/index/index.wxss */
+.container {
+  height: 100vh;
+  background: linear-gradient(to bottom, #7C191E, #a52a2a, #f6f6f6); /* 中大红渐变背景 */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 110rpx; /* 为自定义 TabBar 留出空间 */
+  box-sizing: border-box;
+}
+
+.header {
+  padding: 40rpx 0;
+  text-align: center;
+  z-index: 10;
+}
+
+/* 跑马灯样式 */
+.marquee-box {
+  width: 100%;
+  height: 70rpx;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-item {
+  display: inline-block;
+  padding: 0 40rpx;
+  font-size: 26rpx;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 氛围层：落花 */
+.ambient-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.petal {
+  position: absolute;
+  top: -20rpx;
+  width: 15rpx;
+  height: 15rpx;
+  background: #ffc0cb; /* 粉色落花 */
+  border-radius: 15rpx 0 15rpx 15rpx;
+  opacity: 0.6;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff; /* 白色文字在深色背景上更清晰 */
+  letter-spacing: 4rpx;
+  text-shadow: 0 4rpx 10rpx rgba(0,0,0,0.2);
+}
+
+.subtitle-box {
+  margin-top: 10rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.8);
+  font-style: italic;
+}
+
+/* 树容器 */
+.tree-wrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.tree-image {
+  width: 95%;
+  height: 90%;
+  margin-bottom: 20rpx;
+  filter: drop-shadow(0 10rpx 20rpx rgba(0,0,0,0.2));
+}
+
+.empty-tip {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.7);
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  font-size: 24rpx;
+  color: #8b4513;
+  pointer-events: none;
+}
+
+/* 祈福签 - 整体更柔和的动效与比例 */
+.wish-tag-item {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: sway 4s ease-in-out infinite alternate;
+  transform-origin: top center;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.tag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 60rpx;
+  overflow: visible;
+}
+
+/* 绳 - 细金线 */
+.tag-rope {
+  width: 2rpx;
+  height: 24rpx;
+  background: linear-gradient(180deg, #D4AF37 0%, #C9A227 50%, #B8860B 100%);
+  border-radius: 2rpx;
+  flex-shrink: 0;
+}
+
+/* 顶部白吊牌 - 云朵弧 + 金边与内光 */
+.tag-top-label {
+  width: 54rpx;
+  height: 34rpx;
+  background: #FFFEF9;
+  flex-shrink: 0;
+  margin-top: -1rpx;
+  clip-path: polygon(
+    0 100%, 0 36%, 6% 20%, 22% 4%, 40% 0, 50% 2%,
+    60% 0, 78% 4%, 94% 20%, 100% 36%, 100% 100%
+  );
+  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.4), inset 0 2rpx 8rpx rgba(255,255,255,0.6);
+}
+
+/* 金珠 - 高光与投影 */
+.tag-bead {
+  width: 11rpx;
+  height: 11rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 28% 28%, #E8D48B, #C9A227 45%, #9A7B2A);
+  flex-shrink: 0;
+  margin-top: -5rpx;
+  z-index: 2;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.2), inset 0 1rpx 2rpx rgba(255,255,255,0.4);
+}
+
+/* 底部红须（绳 + 流苏） */
+.tag-bottom-tassel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -4rpx;
+  flex-shrink: 0;
+}
+
+.tag-tassel-string {
+  width: 2rpx;
+  height: 10rpx;
+  background: #8B0000;
+  border-radius: 1rpx;
+}
+
+.tag-tassel-knot {
+  width: 9rpx;
+  height: 9rpx;
+  border-radius: 50%;
+  background: #8B0000;
+  margin-top: -1rpx;
+  box-shadow: 0 1rpx 3rpx rgba(0,0,0,0.25);
+}
+
+/* 流苏 - 三角形（尖端朝上），微渐变与投影 */
+.tag-tassel-triangle {
+  width: 0;
+  height: 0;
+  margin-top: 10rpx;
+  border-left: 12rpx solid transparent;
+  border-right: 12rpx solid transparent;
+  border-top: none;
+  border-bottom: 22rpx solid #8B0000;
+  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,0.25));
+}
+
+/* 白色签（提问）：流苏和点改为金色 */
+.tag-content.question .tag-tassel-string {
+  background: #B8860B;
+}
+
+.tag-content.question .tag-tassel-knot {
+  background: #B8860B;
+  box-shadow: 0 1rpx 3rpx rgba(0,0,0,0.2);
+}
+
+.tag-content.question .tag-tassel-triangle {
+  border-bottom-color: #B8860B;
+}
+
+/* 长条签身 - 底边平直，下方接倒云朵 */
+.tag-body {
+  position: relative;
+  width: 60rpx;
+  min-height: 228rpx;
+  height: auto;
+  margin-top: -1rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 10rpx 14rpx;
+  box-sizing: border-box;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  overflow: visible;
+}
+
+/* 签身下方 - 倒云朵：三段圆弧，金边与内光 */
+.tag-inverted-cloud {
+  width: 60rpx;
+  height: 28rpx;
+  margin-top: -2rpx;
+  flex-shrink: 0;
+  clip-path: polygon(
+    0 0, 100% 0, 100% 100%,
+    96% 88%, 88% 82%, 78% 88%, 68% 92%, 50% 78%, 32% 92%, 22% 88%, 12% 82%, 4% 88%,
+    0 100%
+  );
+}
+
+.tag-content.wish .tag-inverted-cloud {
+  background: #8B0000;
+  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.35), inset 0 -2rpx 6rpx rgba(0,0,0,0.15);
+}
+
+.tag-content.question .tag-inverted-cloud {
+  background: #FFFEFB;
+  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.35), inset 0 2rpx 6rpx rgba(255,255,255,0.5);
+}
+
+/* 签身内金色花纹层 */
+.tag-body-pattern {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.tag-content.wish .tag-body-pattern {
+  background: repeating-linear-gradient(
+    108deg,
+    transparent,
+    transparent 12rpx,
+    rgba(212,175,55,0.06) 12rpx,
+    rgba(212,175,55,0.06) 14rpx
+  );
+}
+
+.tag-content.question .tag-body-pattern {
+  background: repeating-linear-gradient(
+    108deg,
+    transparent,
+    transparent 12rpx,
+    rgba(212,175,55,0.1) 12rpx,
+    rgba(212,175,55,0.1) 14rpx
+  );
+}
+
+/* 签身 - 层次阴影与金边 */
+.tag-content.wish .tag-body {
+  background: #8B0000;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.2), 0 4rpx 12rpx rgba(0,0,0,0.1), inset 0 0 0 1rpx rgba(212,175,55,0.32), inset 0 1rpx 0 rgba(255,255,255,0.06);
+}
+
+.tag-content.question .tag-body {
+  background: #FFFEFB;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.08), inset 0 0 0 1rpx rgba(212,175,55,0.32), inset 0 1rpx 0 rgba(255,255,255,0.8);
+}
+
+/* 签中间竖条 - 细条带微光 */
+.tag-strip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18rpx;
+  height: 88%;
+  border-radius: 8rpx;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.tag-content.wish .tag-strip {
+  background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%);
+}
+
+.tag-content.question .tag-strip {
+  background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.03) 100%);
+}
+
+/* 许愿签字体 - 舒朗与轻描边 */
+.tag-text {
+  position: relative;
+  z-index: 1;
+  font-size: 24rpx;
+  writing-mode: vertical-rl;
+  max-height: 198rpx;
+  line-height: 1.5;
+  letter-spacing: 7rpx;
+  font-weight: 600;
+  font-family: var(--wish-tag-font, "STXingkai"), "华文行楷", "KaiTi", "楷体", serif;
+  word-break: break-all;
+}
+
+.tag-content.wish .tag-text {
+  color: #fff;
+  text-shadow: 0 0 1rpx rgba(0,0,0,0.2), 0 1rpx 4rpx rgba(0,0,0,0.3);
+}
+
+.tag-content.question .tag-text {
+  color: #3a3530;
+  text-shadow: 0 0 1rpx rgba(255,255,255,0.9), 0 1rpx 2rpx rgba(0,0,0,0.06);
+}
+
+/* 摇曳 - 幅度更小、更舒缓 */
+@keyframes sway {
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(2deg); }
+}
+
+/* 入场动画（先弹出，再接入摇曳） */
+.pop-in {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.pop-in.wish-tag-item {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+             sway 3s ease-in-out 0.6s infinite alternate;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 底部操作 */
+.footer-actions {
+  padding: 30rpx 40rpx 60rpx;
+  background: rgba(255,255,255,0.9);
+  border-radius: 40rpx 40rpx 0 0;
+  box-shadow: 0 -10rpx 30rpx rgba(0,0,0,0.05);
+}
+
+.category-scroll {
+  display: flex;
+  white-space: nowrap;
+  margin-bottom: 30rpx;
+}
+
+.category-item {
+  display: inline-block;
+  padding: 12rpx 30rpx;
+  margin-right: 20rpx;
+  font-size: 24rpx;
+  background: #f0f0f0;
+  color: #666;
+  border-radius: 30rpx;
+  transition: all 0.3s;
+}
+
+.category-item.active {
+  background: var(--sysu-red);
+  color: white;
+}
+
+/* 发布按钮 */
+.post-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #7C191E, #a52a2a);
+  color: white;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 44rpx;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(124, 25, 30, 0.3);
+}
+
+.post-btn::after {
+  border: none;
+}
+
+/* 弹窗样式 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+}
+
+.post-modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -100%;
+  background: #fff;
+  border-radius: 40rpx 40rpx 0 0;
+  z-index: 101;
+  padding: 0 40rpx 40rpx; /* 顶部留白由背景图填充 */
+  transition: bottom 0.3s ease;
+  overflow: hidden;
+}
+
+.modal-top-bg {
+  width: 120%;
+  height: 180rpx;
+  margin-left: -10%; /* 稍微溢出让装饰感更强 */
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  position: relative; /* 确保在背景图之上 */
+}
+
+.wish-input {
+  width: 100%;
+  height: 200rpx;
+  background: #f8f8f8;
+  padding: 20rpx;
+  box-sizing: border-box;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.word-count {
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.section-title {
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20rpx;
+}
+
+.tag-item {
+  padding: 10rpx 30rpx;
+  background: #f0f0f0;
+  border-radius: 30rpx;
+  margin-right: 20rpx;
+  margin-bottom: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.tag-active {
+  background: var(--sysu-red);
+  color: #fff;
+}
+
+.anonymous-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.modal-footer {
+  margin-top: 50rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.submit-btn {
+  background: var(--sysu-red) !important;
+  color: #fff !important;
+  border-radius: 50rpx;
+  font-weight: bold;
+}

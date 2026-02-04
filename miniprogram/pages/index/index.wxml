@@ -1,0 +1,69 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+
+  <!-- 顶部标题区 -->
+  <view class="header" style="margin-top: {{paddingTop}}px;">
+    <text class="title">中大线上树洞</text>
+    <view class="subtitle-box">
+      <text class="subtitle">让每一个愿望都被听见</text>
+    </view>
+  </view>
+
+  <!-- 虚拟许愿树区域 -->
+  <view class="tree-wrapper">
+    <!-- 背景氛围特效：落花/飘叶 -->
+    <view class="ambient-layer">
+      <view wx:for="{{ambientElements}}" wx:key="id" class="petal" style="left: {{item.left}}%; animation-duration: {{item.duration}}s; animation-delay: {{item.delay}}s;"></view>
+    </view>
+
+    <!-- 树的主体图片 -->
+    <image src="{{assets.tree}}" mode="aspectFit" class="tree-image"></image>
+    
+    <!-- 动态祈福签（长条状：白吊牌 + 金绳金珠 + 红色签身） -->
+    <view 
+      wx:for="{{questions}}" 
+      wx:key="_id" 
+      class="wish-tag-item {{item.isNew ? 'pop-in' : ''}}"
+      style="left: {{item.x}}%; top: {{item.y}}%; animation-delay: {{item.delay}}s;"
+      bindtap="onTagTap"
+      data-id="{{item._id}}"
+    >
+      <view class="tag-content {{item.type}}">
+        <view class="tag-rope"></view>
+        <view class="tag-top-label"></view>
+        <view class="tag-bead"></view>
+        <view class="tag-body">
+          <view class="tag-body-pattern"></view>
+          <view class="tag-strip"></view>
+          <text class="tag-text">{{item.shortText}}</text>
+        </view>
+        <view class="tag-inverted-cloud"></view>
+        <view class="tag-bottom-tassel">
+          <view class="tag-tassel-string"></view>
+          <view class="tag-tassel-knot"></view>
+          <view class="tag-tassel-triangle"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态提示 -->
+    <view class="empty-tip" wx:if="{{questions.length === 0}}">
+      <text>树上空空的，快来挂上第一个愿望吧</text>
+    </view>
+  </view>
+
+  <!-- 底部操作区 -->
+  <view class="footer-actions">
+    <view class="category-scroll">
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="*this" 
+        class="category-item {{currentCategory === item ? 'active' : ''}}"
+        bindtap="onCategoryChange"
+        data-cat="{{item}}"
+      >{{item}}</view>
+    </view>
+    
+    <!-- 发布按钮已移除，功能迁移至广场页面 -->
+  </view>
+</view>

@@ -1,0 +1,121 @@
+<!--pages/square/square.wxml-->
+<view class="container">
+  
+  <!-- Red Header Section -->
+  <view class="header-section" style="padding-top: {{paddingTop}}px;">
+    <!-- Subtitle/Slogan -->
+    <view class="header-slogan" wx:if="{{currentType === 'question'}}">互助解惑，温暖同行</view>
+    <view class="header-slogan" wx:else>许下心愿，静待花开</view>
+    
+    <!-- Custom Toggle -->
+    <view class="toggle-container">
+      <view class="toggle-pill">
+        <view class="toggle-btn {{currentType === 'wish' ? 'active' : ''}}" bindtap="onTypeChange" data-type="wish">祈愿</view>
+        <view class="toggle-btn {{currentType === 'question' ? 'active' : ''}}" bindtap="onTypeChange" data-type="question">提问</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Search Bar (Floating) -->
+  <view class="search-container">
+    <view class="search-bar">
+      <icon class="search-icon" type="search" size="18" color="#9C1F22" />
+      <input 
+        type="text" 
+        placeholder="搜索感兴趣的话题..." 
+        placeholder-class="search-placeholder"
+        confirm-type="search" 
+        bindinput="onSearchInput" 
+        bindconfirm="onSearchConfirm" 
+      />
+      <view class="search-btn" bindtap="onSearchConfirm">搜索</view>
+    </view>
+  </view>
+
+  <!-- List Area -->
+  <scroll-view scroll-y class="content-list">
+    <view wx:if="{{items.length === 0}}" class="empty-tip">暂无内容</view>
+    
+    <view wx:for="{{items}}" wx:key="id" class="list-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="card-header">
+        <text class="card-title">{{item.title}}</text>
+        <text class="card-tag tag-{{item.tagKey || 'default'}}">{{item.tag}}</text>
+      </view>
+      
+      <view class="card-content">
+        <text>{{item.detail}}</text>
+      </view>
+      
+      <view class="card-footer">
+        <text class="card-time">{{item.time}}</text>
+        <text class="card-count">{{item.count}}</text>
+      </view>
+    </view>
+
+    <!-- Spacer for bottom bar -->
+    <view style="height: 180rpx;"></view>
+  </scroll-view>
+
+  <!-- Bottom Footer -->
+  <view class="footer-area">
+    <!-- Category Filter -->
+    <scroll-view scroll-x class="category-scroll" enable-flex>
+      <view 
+        wx:for="{{categories}}" 
+        wx:key="*this" 
+        class="category-item {{currentCategory === item ? 'active' : ''}}" 
+        bindtap="onCategoryChange" 
+        data-cat="{{item}}"
+      >
+        {{item}}
+      </view>
+    </scroll-view>
+
+    <!-- Action Button -->
+    <button class="action-btn" bindtap="showPostModal">
+      {{currentType === 'question' ? '我要提问' : '我要祈愿'}}
+    </button>
+  </view>
+
+  <!-- 发布弹窗 -->
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="hidePostModal" catchtouchmove="preventTouch"></view>
+  <view class="post-modal {{showModal ? 'modal-show' : ''}}" catchtouchmove="preventTouch">
+    <image src="../../images/modal_top_bg.jpg" mode="aspectFill" class="modal-top-bg"></image>
+    <view class="modal-header">
+      <text>{{currentType === 'question' ? '提个问题' : '许个愿望'}}</text>
+      <icon type="cancel" size="24" color="#999" bindtap="hidePostModal"></icon>
+    </view>
+    
+    <view class="modal-body">
+      <textarea 
+        class="wish-input" 
+        placeholder="{{currentType === 'question' ? '在这里写下关于备考、专业选择或校园生活的疑惑...' : '许个愿，万一实现了呢...'}}" 
+        maxlength="100"
+        bindinput="onInputWish"
+        value="{{wishText}}"
+      ></textarea>
+      <view class="word-count">{{wishText.length}}/100</view>
+
+      <view class="section-title">选择分类</view>
+      <view class="category-tags">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="*this"
+          wx:if="{{item !== '全部'}}"
+          class="tag-item {{selectedCat === item ? 'tag-active' : ''}}"
+          bindtap="selectPostCat"
+          data-cat="{{item}}"
+        >{{item}}</view>
+      </view>
+
+      <view class="anonymous-switch">
+        <text>匿名发布</text>
+        <switch checked="{{isAnonymous}}" bindchange="onAnonymousChange" color="#7C191E"></switch>
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="submit-btn" bindtap="submitWish">发布</button>
+    </view>
+  </view>
+</view>

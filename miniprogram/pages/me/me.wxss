@@ -1,0 +1,190 @@
+/* pages/me/me.wxss */
+.container {
+  padding: 30rpx;
+  background: linear-gradient(to bottom, #7C191E, #a52a2a, #f6f6f6);
+  min-height: 100vh;
+  padding-bottom: 140rpx; /* 为 TabBar 留出空间 */
+  box-sizing: border-box;
+}
+
+.user-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
+  margin-bottom: 40rpx;
+}
+
+.user-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-right: 30rpx;
+  background: #eee;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.role-tag {
+  font-size: 22rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  display: inline-block;
+  width: fit-content;
+}
+
+.role-tag.student {
+  color: #7C191E;
+  background: rgba(124, 25, 30, 0.1);
+}
+
+.role-tag.volunteer {
+  color: var(--sysu-red);
+  background: rgba(124, 25, 30, 0.1);
+}
+
+.user-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1rpx solid #f5f5f5;
+  padding-top: 30rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.stat-line {
+  width: 1rpx;
+  height: 40rpx;
+  background: #eee;
+}
+
+/* 菜单列表 */
+.menu-list {
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+  margin-bottom: 40rpx;
+}
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx 40rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-left {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  font-size: 32rpx;
+  margin-right: 20rpx;
+}
+
+.menu-text {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: #ccc;
+}
+
+.menu-right-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 开发工具 - 身份切换 */
+.dev-tools {
+  margin-top: 60rpx;
+  padding: 0 20rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.switch-btns {
+  display: flex;
+  gap: 20rpx;
+}
+
+.switch-btn {
+  flex: 1;
+  height: 80rpx;
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  color: #666;
+  border: 1rpx solid #eee;
+  border-radius: 12rpx;
+  padding: 0;
+  margin: 0 !important;
+}
+
+.switch-btn.active {
+  background: var(--sysu-red);
+  color: #fff;
+  border-color: var(--sysu-red);
+}
+
+.footer {
+  margin-top: 100rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 60rpx;
+}
+
+.footer text {
+  font-size: 22rpx;
+  color: #ccc;
+  margin-bottom: 8rpx;
+}

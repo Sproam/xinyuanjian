@@ -1,0 +1,12 @@
+<view class="tab-bar">
+  <view class="tab-bar-border"></view>
+  <view wx:for="{{list}}" wx:key="index" class="tab-bar-item" data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+    <view class="icon-wrapper {{selected === index ? 'active' : ''}}">
+      <!-- 简单的 CSS 形状/图标模拟 -->
+      <view class="icon-box icon-{{index}}"></view>
+    </view>
+    <view class="tab-text {{selected === index ? 'text-active' : ''}}">{{item.text}}</view>
+    <!-- 选中时的底部小横线 -->
+    <view class="active-line" wx:if="{{selected === index}}"></view>
+  </view>
+</view>

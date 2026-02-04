@@ -1,0 +1,169 @@
+/* pages/post/post.wxss */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #7C191E, #a52a2a, #f6f6f6);
+  padding-bottom: 170rpx; /* 110rpx TabBar + 60rpx 额外间距 */
+  box-sizing: border-box;
+}
+
+.top-bg {
+  width: 100%;
+  height: 300rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background-color: #7C191E; /* 兜底红色 */
+}
+
+.post-card {
+  position: relative;
+  margin: 180rpx 30rpx 40rpx;
+  background: #fff;
+  border-radius: 32rpx;
+  padding: 40rpx;
+  box-shadow: 0 10rpx 40rpx rgba(124, 25, 30, 0.1);
+  z-index: 1;
+}
+
+.header {
+  margin-bottom: 40rpx;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.content-input {
+  width: 100%;
+  height: 300rpx;
+  background: #f9f9f9;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  box-sizing: border-box;
+  font-size: 30rpx;
+  line-height: 1.6;
+}
+
+.word-count {
+  text-align: right;
+  font-size: 22rpx;
+  color: #ccc;
+  margin-top: 10rpx;
+}
+
+.section {
+  margin-top: 40rpx;
+}
+
+.section-label {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.cat-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.cat-tag {
+  padding: 12rpx 30rpx;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 26rpx;
+  border-radius: 30rpx;
+  transition: all 0.3s;
+}
+
+.cat-tag.active {
+  background: var(--sysu-red);
+  color: #fff;
+}
+
+.anonymous-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.label-tip {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.submit-btn {
+  margin-top: 60rpx;
+  background: #7C191E;
+  color: #fff;
+  height: 100rpx;
+  border-radius: 50rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 10rpx 20rpx rgba(124, 25, 30, 0.2);
+}
+
+.submit-btn[disabled] {
+  background: #e0e0e0 !important;
+  color: #999 !important;
+  box-shadow: none;
+}
+
+.tips {
+  padding: 0 40rpx;
+  margin-top: 20rpx;
+}
+
+.tips text {
+  font-size: 24rpx;
+  color: #fff; /* 改为白色，在红色背景下更清晰 */
+  line-height: 1.6;
+  text-align: center;
+  display: block;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.3);
+}
+
+/* 返回按钮容器 */
+.nav-back {
+  position: fixed;
+  left: 20rpx;
+  width: 64rpx;
+  height: 64rpx;
+  z-index: 9999; /* 确保层级最高 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2); /* 半透明黑底，保证任何背景下可见 */
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+
+.back-arrow {
+  width: 20rpx;
+  height: 20rpx;
+  border-left: 4rpx solid #ffffff;
+  border-bottom: 4rpx solid #ffffff;
+  transform: rotate(45deg);
+  margin-left: 6rpx; /* 视觉修正 */
+}
