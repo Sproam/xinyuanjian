@@ -11,6 +11,11 @@
 
   <!-- 虚拟许愿树区域 -->
   <view class="tree-wrapper">
+    <!-- 刷新按钮 -->
+    <view class="refresh-btn" bindtap="refreshTreeTags">
+      <text class="refresh-icon">↻</text>
+    </view>
+
     <!-- 背景氛围特效：落花/飘叶 -->
     <view class="ambient-layer">
       <view wx:for="{{ambientElements}}" wx:key="id" class="petal" style="left: {{item.left}}%; animation-duration: {{item.duration}}s; animation-delay: {{item.delay}}s;"></view>

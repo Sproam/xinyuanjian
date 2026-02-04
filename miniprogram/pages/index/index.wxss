@@ -97,6 +97,31 @@
   font-style: italic;
 }
 
+/* 刷新按钮 */
+.refresh-btn {
+  position: absolute;
+  top: 20rpx;
+  right: 20rpx;
+  width: 64rpx;
+  height: 64rpx;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+  z-index: 20;
+  padding: 0;
+}
+
+.refresh-icon {
+  font-size: 40rpx; /* 稍微调大一点 */
+  color: #7C191E;
+  font-weight: bold;
+  line-height: 1; /* 消除默认行高影响 */
+  margin-bottom: 4rpx; /* 微调视觉中心 */
+}
+
 /* 树容器 */
 .tree-wrapper {
   flex: 1;
@@ -210,14 +235,20 @@
 }
 
 .category-item {
-  display: inline-block;
-  padding: 12rpx 30rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 54rpx; /* 固定高度 */
+  line-height: normal; /* 重置行高 */
+  padding: 0 30rpx;
   margin-right: 20rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
   background: #f0f0f0;
   color: #666;
   border-radius: 30rpx;
   transition: all 0.3s;
+  box-sizing: border-box; /* 确保 padding 包含在宽高内 */
+  vertical-align: middle; /* 垂直对齐保证 */
 }
 
 .category-item.active {
