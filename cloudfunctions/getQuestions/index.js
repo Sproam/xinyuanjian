@@ -43,6 +43,7 @@ exports.main = async (event, context) => {
 
     // 构建查询
     const query = db.collection('questions').where(whereOpts);
+
     // 获取总数
     const countResult = await query.count()
     const total = countResult.total

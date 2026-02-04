@@ -1,5 +1,4 @@
 /**app.wxss**/
-/* 许愿签特色字体：行楷/隶书/楷体，有毛笔体时可在此或 wx.loadFontFace 覆盖 */
 page {
   background: #f6f6f6;
   display: flex;
@@ -7,7 +6,6 @@ page {
   justify-content: flex-start;
   --sysu-red: #7C191E;
   --sysu-green: #006835;
-  --wish-tag-font: "STXingkai", "华文行楷", "Xingkai SC", "LiSu", "隶书", "SimLi", "KaiTi", "STKaiti", "楷体", "华文楷体", serif;
 }
 
 .container {

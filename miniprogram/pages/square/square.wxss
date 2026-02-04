@@ -203,9 +203,9 @@ page {
   right: 0;
   background: #fff;
   border-radius: 40rpx 40rpx 0 0;
-  padding: 40rpx 40rpx 30rpx;
-  box-shadow: 0 -5rpx 20rpx rgba(0,0,0,0.08);
-  padding-bottom: calc(env(safe-area-inset-bottom) + 180rpx);
+  padding: 40rpx 40rpx 30rpx; /* 增加顶部内边距 */
+  box-shadow: 0 -5rpx 20rpx rgba(0,0,0,0.08); /* Stronger shadow for floating effect */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 180rpx); /* Leave space for TabBar */
   z-index: 99;
 }
 
@@ -214,16 +214,16 @@ page {
   white-space: nowrap;
   margin-bottom: 30rpx;
   width: 100%;
-  height: 85rpx;
-  align-items: center;
+  height: 85rpx; /* 增加高度 */
+  align-items: center; /* 滚动容器内项目垂直居中 */
 }
 
 .category-item {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 54rpx;
-  line-height: normal;
+  height: 54rpx; /* 固定高度 */
+  line-height: normal; /* 重置行高 */
   padding: 0 30rpx;
   margin-right: 20rpx;
   font-size: 26rpx;
@@ -231,7 +231,8 @@ page {
   color: #666;
   border-radius: 30rpx;
   transition: all 0.3s;
-  box-sizing: border-box;
+  box-sizing: border-box; 
+  vertical-align: middle;
 }
 
 .category-item.active {

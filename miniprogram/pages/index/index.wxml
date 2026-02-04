@@ -15,6 +15,7 @@
     <view class="refresh-btn" bindtap="refreshTreeTags">
       <text class="refresh-icon">↻</text>
     </view>
+
     <!-- 背景氛围特效：落花/飘叶 -->
     <view class="ambient-layer">
       <view wx:for="{{ambientElements}}" wx:key="id" class="petal" style="left: {{item.left}}%; animation-duration: {{item.duration}}s; animation-delay: {{item.delay}}s;"></view>
@@ -23,7 +24,7 @@
     <!-- 树的主体图片 -->
     <image src="{{assets.tree}}" mode="aspectFit" class="tree-image"></image>
     
-    <!-- 动态祈福签（长条状：白吊牌 + 金绳金珠 + 签身 + 倒云朵 + 流苏） -->
+    <!-- 动态祈福签：草图形状 - 挂绳→云头(中高侧低)→横带金点→直条签身→云脚(中低侧高)→金珠→流苏 -->
     <view 
       wx:for="{{questions}}" 
       wx:key="_id" 
@@ -34,18 +35,20 @@
     >
       <view class="tag-content {{item.type}}">
         <view class="tag-rope"></view>
-        <view class="tag-top-label"></view>
-        <view class="tag-bead"></view>
+        <view class="tag-loop"></view>
+        <view class="tag-cloud">
+          <view class="tag-cloud-dot"></view>
+        </view>
         <view class="tag-body">
-          <view class="tag-body-pattern"></view>
-          <view class="tag-strip"></view>
+          <view class="tag-band"></view>
           <text class="tag-text">{{item.shortText}}</text>
         </view>
-        <view class="tag-inverted-cloud"></view>
-        <view class="tag-bottom-tassel">
-          <view class="tag-tassel-string"></view>
-          <view class="tag-tassel-knot"></view>
-          <view class="tag-tassel-triangle"></view>
+        <view class="tag-footer"></view>
+        <view class="tag-tassel-line"></view>
+        <view class="tag-bead"></view>
+        <view class="tag-tassel">
+          <view class="tassel-strand tassel-l"></view>
+          <view class="tassel-strand tassel-r"></view>
         </view>
       </view>
     </view>

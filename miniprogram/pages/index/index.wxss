@@ -102,8 +102,8 @@
   position: absolute;
   top: 20rpx;
   right: 20rpx;
-  width: 32px;
-  height: 32px;
+  width: 64rpx;
+  height: 64rpx;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
   display: flex;
@@ -115,11 +115,11 @@
 }
 
 .refresh-icon {
-  font-size: 40rpx;
+  font-size: 40rpx; /* 稍微调大一点 */
   color: #7C191E;
   font-weight: bold;
-  line-height: 1;
-  margin-bottom: 4rpx;
+  line-height: 1; /* 消除默认行高影响 */
+  margin-bottom: 4rpx; /* 微调视觉中心 */
 }
 
 /* 树容器 */
@@ -152,13 +152,13 @@
   pointer-events: none;
 }
 
-/* 祈福签 - 整体更柔和的动效与比例 */
+/* 祈福签样式：与参考图一致 */
 .wish-tag-item {
   position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: sway 4s ease-in-out infinite alternate;
+  animation: sway 3s ease-in-out infinite alternate;
   transform-origin: top center;
   will-change: transform;
   backface-visibility: hidden;
@@ -170,237 +170,237 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 60rpx;
-  overflow: visible;
+  padding-top: 28rpx;
 }
 
-/* 绳 - 细金线 */
+/* 挂绳：从树枝到挂环，与背景区分 */
 .tag-rope {
   width: 2rpx;
-  height: 24rpx;
-  background: linear-gradient(180deg, #D4AF37 0%, #C9A227 50%, #B8860B 100%);
-  border-radius: 2rpx;
-  flex-shrink: 0;
-}
-
-/* 顶部白吊牌 - 云朵弧 + 金边与内光 */
-.tag-top-label {
-  width: 54rpx;
-  height: 34rpx;
-  background: #FFFEF9;
-  flex-shrink: 0;
-  margin-top: -1rpx;
-  clip-path: polygon(
-    0 100%, 0 36%, 6% 20%, 22% 4%, 40% 0, 50% 2%,
-    60% 0, 78% 4%, 94% 20%, 100% 36%, 100% 100%
-  );
-  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.4), inset 0 2rpx 8rpx rgba(255,255,255,0.6);
-}
-
-/* 金珠 - 高光与投影 */
-.tag-bead {
-  width: 11rpx;
-  height: 11rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle at 28% 28%, #E8D48B, #C9A227 45%, #9A7B2A);
-  flex-shrink: 0;
-  margin-top: -5rpx;
-  z-index: 2;
-  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.2), inset 0 1rpx 2rpx rgba(255,255,255,0.4);
-}
-
-/* 底部红须（绳 + 流苏） */
-.tag-bottom-tassel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: -4rpx;
-  flex-shrink: 0;
-}
-
-.tag-tassel-string {
-  width: 2rpx;
-  height: 10rpx;
-  background: #8B0000;
+  height: 32rpx;
+  background: linear-gradient(180deg, #e8dcb8 0%, #c9a227 40%, #a89068 100%);
   border-radius: 1rpx;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.5), 0 2rpx 6rpx rgba(0,0,0,0.15);
 }
 
-.tag-tassel-knot {
-  width: 9rpx;
-  height: 9rpx;
-  border-radius: 50%;
-  background: #8B0000;
-  margin-top: -1rpx;
-  box-shadow: 0 1rpx 3rpx rgba(0,0,0,0.25);
-}
-
-/* 流苏 - 三角形（尖端朝上），微渐变与投影 */
-.tag-tassel-triangle {
-  width: 0;
-  height: 0;
-  margin-top: 10rpx;
-  border-left: 12rpx solid transparent;
-  border-right: 12rpx solid transparent;
+/* 顶部挂环（小圆孔），金边更明显 */
+.tag-loop {
+  width: 12rpx;
+  height: 8rpx;
+  border: 2rpx solid rgba(200, 170, 90, 0.95);
   border-top: none;
-  border-bottom: 22rpx solid #8B0000;
-  filter: drop-shadow(0 2rpx 4rpx rgba(0,0,0,0.25));
+  border-radius: 0 0 50% 50%;
+  margin-top: -2rpx;
+  box-sizing: border-box;
+  background: transparent;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.12);
 }
 
-/* 白色签（提问）：流苏和点改为金色 */
-.tag-content.question .tag-tassel-string {
-  background: #B8860B;
+/* 云朵状顶头：暖白/米色+金边+阴影（提问签用）；红色签单独见下 */
+.tag-cloud {
+  width: 56rpx;
+  height: 22rpx;
+  background: linear-gradient(180deg, #fffbf5 0%, #fdf4e6 50%, #f5ebd8 100%);
+  border: 2rpx solid rgba(200, 170, 90, 0.85);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.18), 0 0 0 1rpx rgba(255,255,255,0.6) inset;
+  position: relative;
+  margin-top: -1rpx;
+  clip-path: polygon(0% 100%, 8% 55%, 28% 18%, 50% 0%, 72% 18%, 92% 55%, 100% 100%);
 }
 
-.tag-content.question .tag-tassel-knot {
-  background: #B8860B;
-  box-shadow: 0 1rpx 3rpx rgba(0,0,0,0.2);
+/* 红色祈愿签顶部：浅朱红云头 + 金红挂绳挂环 */
+.tag-content.wish .tag-rope {
+  background: linear-gradient(180deg, #e8c4b8 0%, #c9a227 35%, #8b3a3a 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 100, 80, 0.4), 0 2rpx 8rpx rgba(80,20,20,0.2);
 }
 
-.tag-content.question .tag-tassel-triangle {
-  border-bottom-color: #B8860B;
+.tag-content.wish .tag-loop {
+  border-color: rgba(200, 150, 90, 0.95);
+  box-shadow: 0 1rpx 4rpx rgba(80,20,20,0.18), 0 0 0 1rpx rgba(255,220,200,0.3) inset;
 }
 
-/* 长条签身 - 底边平直，下方接倒云朵 */
+.tag-content.wish .tag-cloud {
+  background: linear-gradient(180deg, #fff5f2 0%, #fde8e4 40%, #f5d0c8 70%, #e8b8b0 100%);
+  border: 2rpx solid rgba(180, 120, 100, 0.9);
+  box-shadow: 0 2rpx 10rpx rgba(100,30,30,0.25), 0 0 0 1rpx rgba(255,240,235,0.8) inset;
+}
+
+.tag-content.wish .tag-cloud-dot {
+  background: radial-gradient(circle at 30% 30%, #f5e0c0, #c9a227 40%, #8b6914 70%, #6b3020 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 120, 80, 0.5), inset 0 1rpx 0 rgba(255,255,255,0.35);
+}
+
+.tag-cloud-dot {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  transform: translate(-50%, -50%);
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #f0e6c8, #c9a227 45%, #8b6914 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.6), inset 0 1rpx 0 rgba(255,255,255,0.4);
+}
+
+/* 签身：纯直条矩形，左右金边，无下缘波浪 */
 .tag-body {
   position: relative;
-  width: 60rpx;
-  min-height: 228rpx;
-  height: auto;
-  margin-top: -1rpx;
+  width: 56rpx;
+  min-height: 176rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12rpx 10rpx 14rpx;
-  box-sizing: border-box;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  overflow: visible;
-}
-
-/* 签身下方 - 倒云朵：三段圆弧，金边与内光 */
-.tag-inverted-cloud {
-  width: 60rpx;
-  height: 28rpx;
+  padding: 10rpx 8rpx 12rpx;
   margin-top: -2rpx;
-  flex-shrink: 0;
-  clip-path: polygon(
-    0 0, 100% 0, 100% 100%,
-    96% 88%, 88% 82%, 78% 88%, 68% 92%, 50% 78%, 32% 92%, 22% 88%, 12% 82%, 4% 88%,
-    0 100%
-  );
+  box-sizing: border-box;
+  border-left: 3rpx solid rgba(200, 170, 90, 0.95);
+  border-right: 3rpx solid rgba(200, 170, 90, 0.95);
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
 }
 
-.tag-content.wish .tag-inverted-cloud {
-  background: #8B0000;
-  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.35), inset 0 -2rpx 6rpx rgba(0,0,0,0.15);
-}
-
-.tag-content.question .tag-inverted-cloud {
-  background: #FFFEFB;
-  box-shadow: inset 0 0 0 1rpx rgba(212,175,55,0.35), inset 0 2rpx 6rpx rgba(255,255,255,0.5);
-}
-
-/* 签身内金色花纹层 */
-.tag-body-pattern {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.9;
-}
-
-.tag-content.wish .tag-body-pattern {
-  background: repeating-linear-gradient(
-    108deg,
-    transparent,
-    transparent 12rpx,
-    rgba(212,175,55,0.06) 12rpx,
-    rgba(212,175,55,0.06) 14rpx
-  );
-}
-
-.tag-content.question .tag-body-pattern {
-  background: repeating-linear-gradient(
-    108deg,
-    transparent,
-    transparent 12rpx,
-    rgba(212,175,55,0.1) 12rpx,
-    rgba(212,175,55,0.1) 14rpx
-  );
-}
-
-/* 签身 - 层次阴影与金边 */
 .tag-content.wish .tag-body {
-  background: #8B0000;
-  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.2), 0 4rpx 12rpx rgba(0,0,0,0.1), inset 0 0 0 1rpx rgba(212,175,55,0.32), inset 0 1rpx 0 rgba(255,255,255,0.06);
+  background: linear-gradient(180deg, #8b2942 0%, #722f37 30%, #5c2028 100%);
 }
 
 .tag-content.question .tag-body {
-  background: #FFFEFB;
-  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.08), inset 0 0 0 1rpx rgba(212,175,55,0.32), inset 0 1rpx 0 rgba(255,255,255,0.8);
+  background: linear-gradient(180deg, #f8f4eb 0%, #ebe3d0 50%, #e0d6c0 100%);
 }
 
-/* 签中间竖条 - 细条带微光 */
-.tag-strip {
+/* 云朵下方的横带：与签身同色，底边金纹 */
+.tag-band {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 18rpx;
-  height: 88%;
-  border-radius: 8rpx;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14rpx;
+  border-bottom: 2rpx solid rgba(200, 170, 90, 0.9);
   pointer-events: none;
-  z-index: 1;
 }
 
-.tag-content.wish .tag-strip {
-  background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%);
+.tag-content.wish .tag-band {
+  background: linear-gradient(180deg, #9a3548 0%, #722f37 100%);
 }
 
-.tag-content.question .tag-strip {
-  background: linear-gradient(180deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.03) 100%);
+.tag-content.question .tag-band {
+  background: linear-gradient(180deg, #e8e0d0 0%, #e0d6c0 100%);
 }
 
-/* 许愿签字体 - 舒朗与轻描边 */
+/* 云朵状底脚：下缘中间低、两侧高（与顶头对称） */
+.tag-footer {
+  width: 56rpx;
+  height: 20rpx;
+  margin-top: -2rpx;
+  border-top: 2rpx solid rgba(200, 170, 90, 0.9);
+  box-sizing: border-box;
+  /* 下缘中间下垂、两侧上翘 */
+  clip-path: polygon(0% 0%, 8% 45%, 28% 82%, 50% 100%, 72% 82%, 92% 45%, 100% 0%);
+}
+
+.tag-content.wish .tag-footer {
+  background: linear-gradient(180deg, #5c2028 0%, #722f37 60%, #8b2942 100%);
+}
+
+.tag-content.question .tag-footer {
+  background: linear-gradient(180deg, #e0d6c0 0%, #ebe3d0 70%, #f8f4eb 100%);
+}
+
+/* 云脚到金珠的短绳 */
+.tag-tassel-line {
+  width: 2rpx;
+  height: 14rpx;
+  background: linear-gradient(180deg, #a89068 0%, #8b7355 100%);
+  margin-top: -1rpx;
+  border-radius: 1rpx;
+}
+
+/* 签文：竖排艺术字（行楷/隶书优先），长条签内可排更多字 */
 .tag-text {
+  font-size: 22rpx;
+  writing-mode: vertical-rl;
+  max-height: 148rpx;
+  line-height: 1.55;
+  letter-spacing: 6rpx;
+  font-weight: 500;
+  font-family: "STXingkai", "华文行楷", "Xingkai SC", "LiSu", "隶书", "SimLi", "KaiTi", "STKaiti", "楷体", "华文楷体", serif;
   position: relative;
   z-index: 1;
-  font-size: 24rpx;
-  writing-mode: vertical-rl;
-  max-height: 198rpx;
-  line-height: 1.5;
-  letter-spacing: 7rpx;
-  font-weight: 600;
-  font-family: var(--wish-tag-font, "STXingkai"), "华文行楷", "KaiTi", "楷体", serif;
-  word-break: break-all;
+  margin-top: 8rpx;
+  text-shadow: 0 1rpx 3rpx rgba(0,0,0,0.15), 0 0 1rpx rgba(0,0,0,0.08);
 }
 
 .tag-content.wish .tag-text {
-  color: #fff;
-  text-shadow: 0 0 1rpx rgba(0,0,0,0.2), 0 1rpx 4rpx rgba(0,0,0,0.3);
+  color: #f5eedf;
+  text-shadow: 0 1rpx 3rpx rgba(0,0,0,0.35), 0 0 1rpx rgba(0,0,0,0.12);
 }
 
 .tag-content.question .tag-text {
-  color: #3a3530;
-  text-shadow: 0 0 1rpx rgba(255,255,255,0.9), 0 1rpx 2rpx rgba(0,0,0,0.06);
+  color: #3d2e1f;
+  text-shadow: 0 1rpx 3rpx rgba(200, 180, 140, 0.25), 0 0 1rpx rgba(0,0,0,0.06);
 }
 
-/* 摇曳 - 幅度更小、更舒缓 */
+/* 金珠 */
+.tag-bead {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  margin-top: 2rpx;
+  background: radial-gradient(circle at 32% 32%, #f0e6c8, #c9a227 45%, #8b6914 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.5), inset 0 1rpx 0 rgba(255,255,255,0.35);
+}
+
+/* 双缕流苏容器 */
+.tag-tassel {
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
+  margin-top: 4rpx;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 单缕：细条从中心点向下外撇 */
+.tassel-strand {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4rpx;
+  height: 22rpx;
+  border-radius: 2rpx;
+  transform-origin: top center;
+  margin-left: -2rpx;
+}
+
+.tassel-l {
+  transform: translateX(-50%) rotate(-24deg);
+}
+
+.tassel-r {
+  transform: translateX(-50%) rotate(24deg);
+}
+
+.tag-content.wish .tassel-strand {
+  background: linear-gradient(180deg, #a52a2a 0%, #8b0000 50%, #5d0000 100%);
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.2);
+}
+
+.tag-content.question .tassel-strand {
+  background: linear-gradient(180deg, #d4af37 0%, #b8860b 60%, #8b6914 100%);
+  box-shadow: 0 2rpx 6rpx rgba(180, 134, 11, 0.3);
+}
+
+/* 摇曳动画 */
 @keyframes sway {
-  0% { transform: rotate(-2deg); }
-  100% { transform: rotate(2deg); }
+  0% { transform: rotate(-3deg); }
+  100% { transform: rotate(3deg); }
 }
 
-/* 入场动画（先弹出，再接入摇曳） */
+/* 入场动画 */
 .pop-in {
   animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.pop-in.wish-tag-item {
-  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
-             sway 4s ease-in-out 0.6s infinite alternate;
 }
 
 @keyframes popIn {
@@ -426,14 +426,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12rpx 30rpx;
+  height: 54rpx; /* 固定高度 */
+  line-height: normal; /* 重置行高 */
+  padding: 0 30rpx;
   margin-right: 20rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
   background: #f0f0f0;
   color: #666;
   border-radius: 30rpx;
   transition: all 0.3s;
-  box-sizing: border-box;
+  box-sizing: border-box; /* 确保 padding 包含在宽高内 */
+  vertical-align: middle; /* 垂直对齐保证 */
 }
 
 .category-item.active {
@@ -566,3 +569,5 @@
   border-radius: 50rpx;
   font-weight: bold;
 }
+
+
