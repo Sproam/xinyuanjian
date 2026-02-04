@@ -21,6 +21,7 @@ Component({
       if (currentPage) {
         const url = `/${currentPage.route}`;
         const index = this.data.list.findIndex(item => item.pagePath === url);
+        // 只有当计算出的 index 与当前不一致时才更新，且只有找到匹配页面才更新
         if (index > -1 && index !== this.data.selected) {
           this.setData({
             selected: index
@@ -34,7 +35,8 @@ Component({
       const data = e.currentTarget.dataset
       const url = data.path
       wx.switchTab({url})
-      // 移除这里的 setData，依赖 attached 和 onShow 设置正确状态
+      // 移除这里的 setData，因为页面切换后新页面的 tabbar 实例会重新初始化
+      // 依赖 attached 生命周期和页面的 onShow 来设置正确状态
     }
   }
 })
