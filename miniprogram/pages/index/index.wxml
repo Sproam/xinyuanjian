@@ -26,7 +26,7 @@
     <!-- 树的主体图片 -->
     <image src="{{assets.tree}}" mode="aspectFit" class="tree-image"></image>
     
-    <!-- 动态祈福签 -->
+    <!-- 动态祈福签：草图形状 - 挂绳→云头(中高侧低)→横带金点→直条签身→云脚(中低侧高)→金珠→流苏 -->
     <view 
       wx:for="{{questions}}" 
       wx:key="_id" 

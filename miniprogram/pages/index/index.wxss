@@ -149,7 +149,7 @@
   pointer-events: none;
 }
 
-/* 祈福签样式 */
+/* 祈福签样式：与参考图一致 */
 .wish-tag-item {
   position: absolute;
   display: flex;
@@ -157,7 +157,6 @@
   align-items: center;
   animation: sway 3s ease-in-out infinite alternate;
   transform-origin: top center;
-  /* 性能优化：开启 GPU 硬件加速 */
   will-change: transform;
   backface-visibility: hidden;
   transform: translateZ(0);
@@ -167,38 +166,227 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24rpx 16rpx;
   position: relative;
-  min-width: 70rpx;
-  min-height: 140rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.15);
-  border: 1rpx solid #eee;
+  padding-top: 28rpx;
 }
 
-.tag-background {
-  display: none; /* 移除原来的背景图，改用 CSS 样式 */
-}
-
-.tag-handle {
+/* 挂绳：从树枝到挂环，与背景区分 */
+.tag-rope {
   width: 2rpx;
-  height: 50rpx;
-  background: #ffffff; /* 白色挂绳在红色背景下更明显 */
+  height: 32rpx;
+  background: linear-gradient(180deg, #e8dcb8 0%, #c9a227 40%, #a89068 100%);
+  border-radius: 1rpx;
   position: absolute;
-  top: -45rpx;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.5), 0 2rpx 6rpx rgba(0,0,0,0.15);
 }
 
+/* 顶部挂环（小圆孔），金边更明显 */
+.tag-loop {
+  width: 12rpx;
+  height: 8rpx;
+  border: 2rpx solid rgba(200, 170, 90, 0.95);
+  border-top: none;
+  border-radius: 0 0 50% 50%;
+  margin-top: -2rpx;
+  box-sizing: border-box;
+  background: transparent;
+  box-shadow: 0 1rpx 4rpx rgba(0,0,0,0.12);
+}
+
+/* 云朵状顶头：暖白/米色+金边+阴影（提问签用）；红色签单独见下 */
+.tag-cloud {
+  width: 56rpx;
+  height: 22rpx;
+  background: linear-gradient(180deg, #fffbf5 0%, #fdf4e6 50%, #f5ebd8 100%);
+  border: 2rpx solid rgba(200, 170, 90, 0.85);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.18), 0 0 0 1rpx rgba(255,255,255,0.6) inset;
+  position: relative;
+  margin-top: -1rpx;
+  clip-path: polygon(0% 100%, 8% 55%, 28% 18%, 50% 0%, 72% 18%, 92% 55%, 100% 100%);
+}
+
+/* 红色祈愿签顶部：浅朱红云头 + 金红挂绳挂环 */
+.tag-content.wish .tag-rope {
+  background: linear-gradient(180deg, #e8c4b8 0%, #c9a227 35%, #8b3a3a 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 100, 80, 0.4), 0 2rpx 8rpx rgba(80,20,20,0.2);
+}
+
+.tag-content.wish .tag-loop {
+  border-color: rgba(200, 150, 90, 0.95);
+  box-shadow: 0 1rpx 4rpx rgba(80,20,20,0.18), 0 0 0 1rpx rgba(255,220,200,0.3) inset;
+}
+
+.tag-content.wish .tag-cloud {
+  background: linear-gradient(180deg, #fff5f2 0%, #fde8e4 40%, #f5d0c8 70%, #e8b8b0 100%);
+  border: 2rpx solid rgba(180, 120, 100, 0.9);
+  box-shadow: 0 2rpx 10rpx rgba(100,30,30,0.25), 0 0 0 1rpx rgba(255,240,235,0.8) inset;
+}
+
+.tag-content.wish .tag-cloud-dot {
+  background: radial-gradient(circle at 30% 30%, #f5e0c0, #c9a227 40%, #8b6914 70%, #6b3020 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 120, 80, 0.5), inset 0 1rpx 0 rgba(255,255,255,0.35);
+}
+
+.tag-cloud-dot {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  transform: translate(-50%, -50%);
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #f0e6c8, #c9a227 45%, #8b6914 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.6), inset 0 1rpx 0 rgba(255,255,255,0.4);
+}
+
+/* 签身：纯直条矩形，左右金边，无下缘波浪 */
+.tag-body {
+  position: relative;
+  width: 56rpx;
+  min-height: 176rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10rpx 8rpx 12rpx;
+  margin-top: -2rpx;
+  box-sizing: border-box;
+  border-left: 3rpx solid rgba(200, 170, 90, 0.95);
+  border-right: 3rpx solid rgba(200, 170, 90, 0.95);
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+}
+
+.tag-content.wish .tag-body {
+  background: linear-gradient(180deg, #8b2942 0%, #722f37 30%, #5c2028 100%);
+}
+
+.tag-content.question .tag-body {
+  background: linear-gradient(180deg, #f8f4eb 0%, #ebe3d0 50%, #e0d6c0 100%);
+}
+
+/* 云朵下方的横带：与签身同色，底边金纹 */
+.tag-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14rpx;
+  border-bottom: 2rpx solid rgba(200, 170, 90, 0.9);
+  pointer-events: none;
+}
+
+.tag-content.wish .tag-band {
+  background: linear-gradient(180deg, #9a3548 0%, #722f37 100%);
+}
+
+.tag-content.question .tag-band {
+  background: linear-gradient(180deg, #e8e0d0 0%, #e0d6c0 100%);
+}
+
+/* 云朵状底脚：下缘中间低、两侧高（与顶头对称） */
+.tag-footer {
+  width: 56rpx;
+  height: 20rpx;
+  margin-top: -2rpx;
+  border-top: 2rpx solid rgba(200, 170, 90, 0.9);
+  box-sizing: border-box;
+  /* 下缘中间下垂、两侧上翘 */
+  clip-path: polygon(0% 0%, 8% 45%, 28% 82%, 50% 100%, 72% 82%, 92% 45%, 100% 0%);
+}
+
+.tag-content.wish .tag-footer {
+  background: linear-gradient(180deg, #5c2028 0%, #722f37 60%, #8b2942 100%);
+}
+
+.tag-content.question .tag-footer {
+  background: linear-gradient(180deg, #e0d6c0 0%, #ebe3d0 70%, #f8f4eb 100%);
+}
+
+/* 云脚到金珠的短绳 */
+.tag-tassel-line {
+  width: 2rpx;
+  height: 14rpx;
+  background: linear-gradient(180deg, #a89068 0%, #8b7355 100%);
+  margin-top: -1rpx;
+  border-radius: 1rpx;
+}
+
+/* 签文：竖排艺术字（行楷/隶书优先），长条签内可排更多字 */
 .tag-text {
-  font-size: 24rpx;
-  color: #333;
+  font-size: 22rpx;
   writing-mode: vertical-rl;
-  max-height: 110rpx;
-  line-height: 1.4;
-  letter-spacing: 4rpx;
-  font-weight: 600;
+  max-height: 148rpx;
+  line-height: 1.55;
+  letter-spacing: 6rpx;
+  font-weight: 500;
+  font-family: "STXingkai", "华文行楷", "Xingkai SC", "LiSu", "隶书", "SimLi", "KaiTi", "STKaiti", "楷体", "华文楷体", serif;
+  position: relative;
+  z-index: 1;
+  margin-top: 8rpx;
+  text-shadow: 0 1rpx 3rpx rgba(0,0,0,0.15), 0 0 1rpx rgba(0,0,0,0.08);
+}
+
+.tag-content.wish .tag-text {
+  color: #f5eedf;
+  text-shadow: 0 1rpx 3rpx rgba(0,0,0,0.35), 0 0 1rpx rgba(0,0,0,0.12);
+}
+
+.tag-content.question .tag-text {
+  color: #3d2e1f;
+  text-shadow: 0 1rpx 3rpx rgba(200, 180, 140, 0.25), 0 0 1rpx rgba(0,0,0,0.06);
+}
+
+/* 金珠 */
+.tag-bead {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  margin-top: 2rpx;
+  background: radial-gradient(circle at 32% 32%, #f0e6c8, #c9a227 45%, #8b6914 100%);
+  box-shadow: 0 0 0 1rpx rgba(180, 150, 80, 0.5), inset 0 1rpx 0 rgba(255,255,255,0.35);
+}
+
+/* 双缕流苏容器 */
+.tag-tassel {
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
+  margin-top: 4rpx;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 单缕：细条从中心点向下外撇 */
+.tassel-strand {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4rpx;
+  height: 22rpx;
+  border-radius: 2rpx;
+  transform-origin: top center;
+  margin-left: -2rpx;
+}
+
+.tassel-l {
+  transform: translateX(-50%) rotate(-24deg);
+}
+
+.tassel-r {
+  transform: translateX(-50%) rotate(24deg);
+}
+
+.tag-content.wish .tassel-strand {
+  background: linear-gradient(180deg, #a52a2a 0%, #8b0000 50%, #5d0000 100%);
+  box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.2);
+}
+
+.tag-content.question .tassel-strand {
+  background: linear-gradient(180deg, #d4af37 0%, #b8860b 60%, #8b6914 100%);
+  box-shadow: 0 2rpx 6rpx rgba(180, 134, 11, 0.3);
 }
 
 /* 摇曳动画 */
