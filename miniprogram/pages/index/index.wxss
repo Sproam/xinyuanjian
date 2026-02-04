@@ -225,6 +225,23 @@
   color: white;
 }
 
+/* 发布按钮 */
+.post-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #7C191E, #a52a2a);
+  color: white;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 44rpx;
+  border: none;
+  box-shadow: 0 8rpx 20rpx rgba(124, 25, 30, 0.3);
+}
+
+.post-btn::after {
+  border: none;
+}
+
 /* 弹窗样式 */
 .modal-mask {
   position: fixed;
@@ -334,3 +351,22 @@
   font-weight: bold;
 }
 
+
+/* Tag Colors */
+.tag-content.wish {
+  background: #D32F2F;
+  border: 1rpx solid #B71C1C;
+}
+
+.tag-content.wish .tag-text {
+  color: #fff;
+}
+
+.tag-content.question {
+  background: #fff;
+  border: 1rpx solid #eee;
+}
+
+.tag-content.question .tag-text {
+  color: #333;
+}

@@ -1,6 +1,9 @@
 // pages/index/index.js
+const app = getApp();
+
 Page({
   data: {
+    paddingTop: 0,
     // 资源路径配置（接入云存储后可修改此处）
     assets: {
       tree: '../../images/tree.jpg',
@@ -26,6 +29,7 @@ Page({
   },
 
   onLoad: function() {
+    this.setData({ paddingTop: app.globalData.navBarHeight });
     this.fetchQuestions();
     this.initAmbient();
   },
@@ -89,73 +93,103 @@ Page({
       return;
     }
 
+    this.setData({ isSubmitting: true });
     wx.showLoading({ title: '正在挂上枝头...' });
 
-    // 模拟提交成功后的逻辑
-    setTimeout(() => {
-      const newQuestion = {
-        _id: Date.now().toString(),
-        shortText: wishText.substring(0, 8),
-        // 优化位置：尽量分布在树冠的中上部
-        x: Math.random() * 60 + 20, 
-        y: Math.random() * 40 + 10,
-        delay: 0,
-        isNew: true
-      };
-
-      const questions = [newQuestion, ...this.data.questions];
-      this.setData({
-        questions,
-        showModal: false,
-        wishText: '',
-        isAnonymous: false
-      });
-
+    // 调用云函数发布
+    wx.cloud.callFunction({
+      name: 'createPost',
+      data: {
+        content: wishText.trim(),
+        category: selectedCat,
+        isAnonymous: isAnonymous,
+        type: 'wish' // 从首页发布默认为祈愿
+      }
+    }).then(res => {
       wx.hideLoading();
-      wx.vibrateLong(); // 成功后长振动
-      wx.showToast({ title: '挂载成功！', icon: 'success' });
-    }, 800);
+      this.setData({ isSubmitting: false });
+
+      if (res.result && res.result.success) {
+        // 创建新的愿望标签显示在树上
+        const newQuestion = {
+          _id: res.result.data._id,
+          shortText: wishText.substring(0, 8),
+          x: Math.random() * 60 + 20,
+          y: Math.random() * 40 + 10,
+          delay: 0,
+          isNew: true,
+          type: 'wish'
+        };
+
+        const questions = [newQuestion, ...this.data.questions];
+        this.setData({
+          questions,
+          showModal: false,
+          wishText: '',
+          isAnonymous: false
+        });
+
+        wx.vibrateLong();
+        wx.showToast({ title: '挂载成功！', icon: 'success' });
+      } else {
+        wx.showToast({
+          title: res.result?.errMsg || '发布失败',
+          icon: 'none'
+        });
+      }
+    }).catch(err => {
+      wx.hideLoading();
+      this.setData({ isSubmitting: false });
+      console.error('[createPost] 调用失败:', err);
+      wx.showToast({
+        title: '网络错误，请重试',
+        icon: 'none'
+      });
+    });
   },
 
   fetchQuestions: function() {
-    // --- 云开发实际调用代码示例 (取消注释即可启用) ---
-    /*
-    const db = wx.cloud.database();
-    db.collection('questions').where({
-      status: 'active' // 仅获取活跃的愿望
-    }).orderBy('createTime', 'desc').get({
-      success: res => {
-        this.setData({
-          questions: res.data.map(q => ({
-            ...q,
-            // 随机生成树上的位置
-            x: Math.random() * 60 + 20,
-            y: Math.random() * 40 + 10
-          }))
-        });
+    // 调用云函数获取许愿树数据
+    wx.cloud.callFunction({
+      name: 'getQuestions',
+      data: {
+        forTree: true // 许愿树模式，只获取必要字段
       }
+    }).then(res => {
+      if (res.result && res.result.success) {
+        const questions = res.result.data.items.map((q, index) => ({
+          _id: q._id,
+          shortText: q.shortText || q.content?.substring(0, 8),
+          x: q.displayX || q.x || Math.random() * 60 + 20,
+          y: q.displayY || q.y || Math.random() * 40 + 10,
+          delay: index * 0.15,
+          type: q.type
+        }));
+        this.setData({ questions });
+      } else {
+        // 云函数失败，使用备用数据
+        this.loadMockQuestions();
+      }
+    }).catch(err => {
+      console.error('[getQuestions] 调用失败:', err);
+      // 网络错误时使用模拟数据
+      this.loadMockQuestions();
     });
-    */
+  },
 
-    // --- 目前使用的 Mock 数据 ---
-    // 性能优化：限制树上同时显示的签子数量，避免内存占用过高
-    const MAX_VISIBLE_TAGS = 20; 
-    
-    // 模拟数据生成逻辑
+  // 备用模拟数据
+  loadMockQuestions: function() {
     const mockQuestions = [
-      { _id: '1', shortText: '数学怎么提分', x: 28, y: 22, delay: 0.2 },
-      { _id: '2', shortText: '中大食堂好吃吗', x: 48, y: 15, delay: 0.5 },
-      { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8 },
-      { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1 },
-      { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4 },
+      { _id: '1', shortText: '数学怎么提分', x: 28, y: 22, delay: 0.2, type: 'question' },
+      { _id: '2', shortText: '中大食堂好吃吗', x: 48, y: 15, delay: 0.5, type: 'question' },
+      { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8, type: 'wish' },
+      { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1, type: 'question' },
+      { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4, type: 'wish' },
       { _id: '6', shortText: '如何平衡学习休息', x: 75, y: 20, delay: 0.1 },
       { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7 },
       { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3 },
     ];
-
-    this.setData({
-      questions: mockQuestions.slice(0, MAX_VISIBLE_TAGS)
-    });
+    this.setData({ questions: mockQuestions.slice(0, 20) });
   },
 
   onCategoryChange: function(e) {
@@ -165,13 +199,56 @@ Page({
       currentCategory: cat
     });
     
-    // 模拟筛选逻辑
+    // 根据分类筛选
     if (cat === '全部') {
       this.fetchQuestions();
     } else {
-      const filtered = this.data.questions.filter(q => Math.random() > 0.5); // 模拟筛选效果
-      this.setData({ questions: filtered });
+      // 先尝试调用云函数按分类筛选
+      wx.cloud.callFunction({
+        name: 'getQuestions',
+        data: {
+          forTree: true,
+          category: cat
+        }
+      }).then(res => {
+        if (res.result && res.result.success && res.result.data.items.length > 0) {
+          const questions = res.result.data.items.map((q, index) => ({
+            _id: q._id,
+            shortText: q.shortText || q.content?.substring(0, 8),
+            x: q.displayX || q.x || Math.random() * 60 + 20,
+            y: q.displayY || q.y || Math.random() * 40 + 10,
+            delay: index * 0.15,
+            type: q.type,
+            category: q.category
+          }));
+          this.setData({ questions });
+        } else {
+          // 云函数返回空结果，使用本地模拟筛选
+          this.filterMockQuestions(cat);
+        }
+      }).catch(err => {
+        console.error('[getQuestions] 筛选失败:', err);
+        // 云函数失败时使用本地模拟筛选
+        this.filterMockQuestions(cat);
+      });
     }
+  },
+
+  // 本地模拟筛选（备用方案）
+  filterMockQuestions: function(cat) {
+    const allMockQuestions = [
+      { _id: '1', shortText: '数学怎么提分', x: 28, y: 22, delay: 0.2, type: 'question', category: '学习' },
+      { _id: '2', shortText: '中大食堂好吃吗', x: 48, y: 15, delay: 0.5, type: 'question', category: '生活' },
+      { _id: '3', shortText: '想报岭南学院', x: 68, y: 28, delay: 0.8, type: 'wish', category: '学习' },
+      { _id: '4', shortText: '高三好焦虑呀', x: 42, y: 35, delay: 1.1, type: 'question', category: '情感' },
+      { _id: '5', shortText: '中大志愿者招募', x: 58, y: 32, delay: 1.4, type: 'wish', category: '中大生活' },
+      { _id: '6', shortText: '如何平衡学习休息', x: 75, y: 20, delay: 0.1, type: 'question', category: '学习' },
+      { _id: '7', shortText: '考上中大的学姐', x: 22, y: 32, delay: 0.7, type: 'wish', category: '情感' },
+      { _id: '8', shortText: '宿舍环境怎么样', x: 52, y: 45, delay: 0.3, type: 'question', category: '中大生活' },
+    ];
+    
+    const filtered = allMockQuestions.filter(q => q.category === cat);
+    this.setData({ questions: filtered });
   },
 
   onTagTap: function(e) {

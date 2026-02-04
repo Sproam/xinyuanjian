@@ -143,3 +143,27 @@
   display: block;
   text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.3);
 }
+
+/* 返回按钮容器 */
+.nav-back {
+  position: fixed;
+  left: 20rpx;
+  width: 64rpx;
+  height: 64rpx;
+  z-index: 9999; /* 确保层级最高 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2); /* 半透明黑底，保证任何背景下可见 */
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+
+.back-arrow {
+  width: 20rpx;
+  height: 20rpx;
+  border-left: 4rpx solid #ffffff;
+  border-bottom: 4rpx solid #ffffff;
+  transform: rotate(45deg);
+  margin-left: 6rpx; /* 视觉修正 */
+}
