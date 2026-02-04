@@ -395,8 +395,8 @@
 .nav-back {
   position: fixed;
   left: 20rpx;
-  width: 64rpx;
-  height: 64rpx;
+  width: 32px; /* 固定宽高像素值，避免rpx计算误差 */
+  height: 32px;
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -404,13 +404,16 @@
   background: rgba(0, 0, 0, 0.2); 
   border-radius: 50%;
   backdrop-filter: blur(4px);
+  /* 防止被拉伸变形 */
+  flex-shrink: 0;
 }
 
 .back-arrow {
-  width: 20rpx;
-  height: 20rpx;
-  border-left: 4rpx solid #ffffff;
-  border-bottom: 4rpx solid #ffffff;
+  width: 10px; /* 使用px单位保证显示一致 */
+  height: 10px;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
   transform: rotate(45deg);
-  margin-left: 6rpx;
+  margin-left: 4px; /* 视觉修正居中 */
+  margin-top: -1px; /* 微调垂直居中 */
 }
