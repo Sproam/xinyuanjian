@@ -16,18 +16,8 @@ Component({
   },
   lifetimes: {
     attached() {
-      const pages = getCurrentPages();
-      const currentPage = pages[pages.length - 1];
-      if (currentPage) {
-        const url = `/${currentPage.route}`;
-        const index = this.data.list.findIndex(item => item.pagePath === url);
-        // 只有当计算出的 index 与当前不一致时才更新，且只有找到匹配页面才更新
-        if (index > -1 && index !== this.data.selected) {
-          this.setData({
-            selected: index
-          });
-        }
-      }
+      // 移除自动设置 selected 的逻辑，完全交由页面 onShow 控制
+      // 这样可以避免组件初始化状态与页面设置冲突导致的 Bug
     }
   },
   methods: {

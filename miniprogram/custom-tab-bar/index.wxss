@@ -44,74 +44,120 @@
   transform: translateY(-4rpx);
 }
 
-/* 纯 CSS 绘制的简单图标 */
+/* 纯 CSS 绘制的精致图标 */
 .icon-box {
-  border: 3rpx solid #e0e0e0;
-  box-sizing: border-box;
+  position: relative;
+  transition: all 0.3s;
 }
 
-/* 树洞图标 (像个树冠) */
+/* 选中状态下图标颜色变化 (配合 text-active) */
+.active .icon-box {
+  transform: scale(1.1);
+}
+
+/* --- 图标 0: 树洞 (Tree) --- */
 .icon-0 {
-  width: 24rpx;
-  height: 24rpx;
-  border-radius: 50% 50% 0 0;
+  width: 0;
+  height: 0;
+  border-left: 14rpx solid transparent;
+  border-right: 14rpx solid transparent;
+  border-bottom: 24rpx solid #e0e0e0; /* 树冠 */
+  margin-bottom: 6rpx;
   position: relative;
 }
+
+/* 树干 */
 .icon-0::after {
   content: '';
   position: absolute;
-  bottom: -6rpx;
-  left: 8rpx;
-  width: 4rpx;
-  height: 8rpx;
+  top: 24rpx; /* 接在树冠下面 */
+  left: -4rpx; /* (14 - 4*2)/2 - 14 */
+  width: 8rpx;
+  height: 10rpx;
   background: #e0e0e0;
 }
 
-/* 发布图标 (加号) */
-.icon-1 {
-  width: 26rpx;
-  height: 26rpx;
-  position: relative;
-  border: none;
+/* 选中态：树变成金色 */
+.active .icon-0 {
+  border-bottom-color: #FFD700;
 }
-.icon-1::before, .icon-1::after {
+.active .icon-0::after {
+  background: #FFD700;
+}
+
+
+/* --- 图标 1: 广场 (Discussion/Square) --- */
+/* 两个对话气泡 */
+.icon-1 {
+  width: 32rpx;
+  height: 24rpx;
+  background: #e0e0e0;
+  border-radius: 6rpx;
+  position: relative;
+  box-shadow: 4rpx 4rpx 0 rgba(255,255,255,0.2); /* 简单的重叠效果 */
+}
+
+/* 气泡尾巴 */
+.icon-1::before {
   content: '';
   position: absolute;
-  background: #e0e0e0;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  bottom: -6rpx;
+  left: 6rpx;
+  width: 0;
+  height: 0;
+  border-left: 8rpx solid transparent;
+  border-top: 8rpx solid #e0e0e0;
 }
-.icon-1::before { width: 100%; height: 3rpx; }
-.icon-1::after { width: 3rpx; height: 100%; }
 
-/* 我的图标 (人头) */
-.icon-2 {
+/* 气泡内的横线 */
+.icon-1::after {
+  content: '';
+  position: absolute;
+  top: 8rpx;
+  left: 6rpx;
   width: 20rpx;
-  height: 20rpx;
-  border-radius: 50%;
-  position: relative;
+  height: 8rpx;
+  border-top: 2rpx solid #7C191E;
+  border-bottom: 2rpx solid #7C191E;
+  opacity: 0.3;
 }
+
+/* 选中态 */
+.active .icon-1 {
+  background: #FFD700;
+  box-shadow: 4rpx 4rpx 0 rgba(255,255,255,0.3);
+}
+.active .icon-1::before {
+  border-top-color: #FFD700;
+}
+
+
+/* --- 图标 2: 我的 (User) --- */
+.icon-2 {
+  width: 22rpx;
+  height: 22rpx;
+  background: #e0e0e0;
+  border-radius: 50%; /* 头 */
+  position: relative;
+  top: -6rpx;
+}
+
+/* 身体 */
 .icon-2::after {
   content: '';
   position: absolute;
-  bottom: -12rpx;
-  left: -4rpx;
-  width: 28rpx;
-  height: 12rpx;
-  border: 3rpx solid #e0e0e0;
-  border-radius: 12rpx 12rpx 0 0;
-  border-bottom: none;
+  top: 26rpx;
+  left: 50%;
+  transform: translateX(-50%); /* 绝对居中 */
+  width: 36rpx;
+  height: 16rpx;
+  background: #e0e0e0;
+  border-radius: 16rpx 16rpx 0 0; /* 圆润的肩膀 */
 }
 
-.active .icon-box, 
-.active .icon-box::before, 
-.active .icon-box::after {
-  border-color: #FFD700 !important;
-  background-color: #FFD700 !important;
-}
-.active.icon-1::before, .active.icon-1::after {
-  background-color: #FFD700 !important;
+/* 选中态 */
+.active .icon-2, .active .icon-2::after {
+  background: #FFD700;
 }
 
 .tab-text {
